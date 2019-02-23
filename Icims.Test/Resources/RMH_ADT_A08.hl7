@@ -1,0 +1,13 @@
+MSH|^~\&|IPM|1334|MELIE|1334|20170403122446||ADT^A08^ADT_A01|330465171|P|2.4|||AL|NE
+EVN|A08|20170403122400||DGPRO_U|MELDELOREO^Olivia De Lorenzo^^^^^^USERS
+PID|1||3008781^^^^MR^^20161111~42933476841^^^AUSHIC^MC^^20161111||Scanlan^James^Nicholas^^MR^^L||19870223000000|M||4^NOT Aboriginal or TSI^ETHGR|5 Melrose Ct^^Scarborough^VIC^3155^1100^4||0405220921^PRN^PH||1201^English^SPOKL|5^Married^MARRY|7010^No Religion^RELIG|||||4^NOT Aboriginal or TSI^ETHGR|1100|N||||1101^Australian^NATNL||N|N||20170403122023
+PV1|1|P|C3EA^^^1334^^^^^C 3 East Admissions|P|785141||SZEJ^Szer^Jeff^^^PROF^^^^L^^^MAIN~0454754B^Szer^Jeff^^^PROF^^^1334^L^^^PROV~0454755L^Szer^Jeff^^^PROF^^^1334^L^^^PROV~0454755L^Szer^Jeff^^^PROF^^^^L^^^PROVN~SZEJ^Szer^Jeff^^^PROF^^^^L^^^LOCAL|SZEJ^Szer^Jeff^^^PROF^^^^L~0454754B^Szer^Jeff^^^PROF^^^1334^L^^^^1334~0454755L^Szer^Jeff^^^PROF^^^1334^L^^^^1334~0454755L^Szer^Jeff^^^PROF^^^^L~SZEJ^Szer^Jeff^^^PROF^^^^L||HAEM||||NSP|||SZEJ^Szer^Jeff^^^PROF^^^^L~0454754B^Szer^Jeff^^^PROF^^^1334^L^^^^1334~0454755L^Szer^Jeff^^^PROF^^^1334^L^^^^1334~0454755L^Szer^Jeff^^^PROF^^^^L~SZEJ^Szer^Jeff^^^PROF^^^^L|MP||MP^20170403000000
+PV2|||ELADM^^REASN|||||20170409160000||||200 (Procedures Not Reportable To ESIS)|||||||||||||1
+ZPV|N|Y|||||18^Not Specified^MPIAS||NSP^Not Specified^RFOTY|3^3 Months from first use^RFVPD
+ROL|785141^WLIST|UC|AD^Admitting|SZEJ^Szer^Jeff|20170403000000||||CONLT^Consultant/VMO
+ROL|6080435^REFRL|UC|PP^PrimaryAngusEdit Provider|SZEJ^Szer^Jeff|19900101000000||||GMPRC^Consultant/VMO
+ROL|6080435^REFRL|UC|RT^Referring to Provider|SZEJ^Szer^Jeff|19900101000000||||CONLT^Consultant/VMO
+PR1|1|PPP|200^PROCEDURES NOT REPORTABLE TO ESIS^PPP|PROCEDURES NOT REPORTABLE TO ESIS|20170403122407|P||||||SZEJ^Szer^Jeff^^^PROF^^^^^^^MAIN~0454754B^Szer^Jeff^^^PROF^^^^^^^PROV^1334~0454755L^Szer^Jeff^^^PROF^^^^^^^PROV^1334~0454755L^Szer^Jeff^^^PROF^^^^^^^PROVN~SZEJ^Szer^Jeff^^^PROF^^^^^^^LOCAL||1
+ROL|785141^WLIST|UC|AT^Attending|SZEJ^Szer^Jeff^^^PROF|20170403000000||||CONLT^Consultant/VMO^PRTYP
+IN1|1|4167275^^PIMS|HIC|MEDICARE - PUBLIC PATIENT||||||||20170403|||NA|Scanlan^James^Nicholas^^MR^^L||19870223000000|5 Melrose Ct^^Boronia^VIC^3155^1100^4|||||||||||||||||0|||||||M
+ZWL|20170403000000|HAEM^Haematology^SPECT||MP^Public - Eligible^ADCAT|1^1 - Urgent^PRITY|N^NORMAL^LSTAT|^T cell ALL\.br\Transfer to Austin 12.4.17|200^Procedures Not Reportable To ESIS|NSP^Not Specified||||||20170409160000|NSP^Not Specified^OFOCM||INPAT^Inpatient Service^SVTYP|^^WLRUL|Conduting chemotherapy + total body irradiation in preparation for BMT|391364|MD^Planned multiday stay^INMGT
