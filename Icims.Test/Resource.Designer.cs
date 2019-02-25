@@ -63,9 +63,29 @@ namespace Icims.Test {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] RMH_ADT_A04 {
+            get {
+                object obj = ResourceManager.GetObject("RMH_ADT_A04", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] RMH_ADT_A08 {
             get {
                 object obj = ResourceManager.GetObject("RMH_ADT_A08", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] RMH_ADT_A40 {
+            get {
+                object obj = ResourceManager.GetObject("RMH_ADT_A40", resourceCulture);
                 return ((byte[])(obj));
             }
         }

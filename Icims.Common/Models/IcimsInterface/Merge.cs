@@ -18,11 +18,11 @@ namespace Icims.Common.Models.IcimsInterface
 
     public override Dictionary<string, string> GetValueDictionary()
     {
-      var result = base.GetValueDictionary();
+      base.GetValueDictionary();
       //Note 'action' is added by the base
       CustomEncode("prior_ur", this.prior_ur);
       CustomEncode("prior_assigning_authority", this.prior_assigning_authority);     
-      return result;
+      return this.ValueDictionay;
     }
   }
 }

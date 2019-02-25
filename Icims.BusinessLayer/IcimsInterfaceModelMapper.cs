@@ -26,73 +26,13 @@ namespace Icims.BusinessLayer
     public Merge MapToMerge(DomainModel Domain)
     {
       var Merge = new Merge();
-      //MapAddUpdate(Domain, Merge as AddUpdateBase);
+      MapMerge(Domain, Merge);
       return Merge;
     }
 
     private void MapAddUpdate(DomainModel Domain, AddUpdateBase AddUpdate)
     {
-      //Message
-      AddUpdate.msgid = Domain.HL7Message.MessageControlId;
-      AddUpdate.msg_datetime = Domain.HL7Message.MessageDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
-
-      //Patient
-      AddUpdate.ur_num = Domain.Patient.MedicalRecordNumber;
-      AddUpdate.assigning_authority = Domain.Patient.MedicalRecordNumberAssigningAuthorityCode;
-
-      AddUpdate.surname = Domain.Patient.Family;
-      AddUpdate.fname = Domain.Patient.Given;
-      if (Domain.Patient.DateOfBirth != null)
-      {
-        AddUpdate.dob = Domain.Patient.DateOfBirth.ToString("yyyy-MM-dd");
-      }      
-      AddUpdate.sex = Domain.Patient.Gender.GetLiteral();
-
-      //Model.phone = "";
-      if (Domain.Patient.ContactHome != null)
-      {
-        if (Domain.Patient.ContactHome.PhoneList.Count > 0)
-        {
-          AddUpdate.phone = Domain.Patient.ContactHome.PhoneList[0];
-        }
-      }
-      if (AddUpdate.phone == string.Empty && Domain.Patient.ContactBusiness != null)
-      {
-        if (Domain.Patient.ContactBusiness.PhoneList.Count > 0)
-        {
-          AddUpdate.phone = Domain.Patient.ContactBusiness.PhoneList[0];
-        }
-      }
-      
-      //Model.mobile = "";
-      if (Domain.Patient.ContactHome != null)
-      {
-        if (Domain.Patient.ContactHome.MobileList.Count > 0)
-        {
-          AddUpdate.mobile = Domain.Patient.ContactHome.MobileList[0];
-        }
-      }
-      if (AddUpdate.mobile == null && Domain.Patient.ContactBusiness != null)
-      {
-        if (Domain.Patient.ContactBusiness.MobileList.Count > 0)
-        {
-          AddUpdate.mobile = Domain.Patient.ContactBusiness.MobileList[0];
-        }
-      }
-
-
-      AddUpdate.language = Domain.Patient.Language;
-      AddUpdate.marital_status = Domain.Patient.MaritalStatus;
-      AddUpdate.aboriginality = Domain.Patient.Aboriginality;
-
-      if (Domain.Patient.Address != null)
-      {
-        AddUpdate.addr_line_1 = Domain.Patient.Address.AddressLineOne;
-        AddUpdate.addr_line_2 = Domain.Patient.Address.AddressLineTwo;
-        AddUpdate.suburb = Domain.Patient.Address.Suburb;
-        AddUpdate.postcode = Domain.Patient.Address.PostCode;
-        AddUpdate.state = Domain.Patient.Address.State;
-      }
+      MapBase(Domain, AddUpdate as IcimsModelBase);
 
       //Doctor
       if (Domain.Doctor != null)
@@ -123,6 +63,78 @@ namespace Icims.BusinessLayer
         
       }
 
+    }
+
+    private void MapMerge(DomainModel Domain, Merge Merge)
+    {
+      MapBase(Domain, Merge as IcimsModelBase);
+      Merge.prior_ur = Domain.Patient.PriorMRN.Value;
+      Merge.prior_assigning_authority = Domain.Patient.PriorMRN.AssigningAuthorityCode;
+    }
+
+    private void MapBase(DomainModel Domain, IcimsModelBase Base)
+    {
+      //Message
+      Base.msgid = Domain.HL7Message.MessageControlId;
+      Base.msg_datetime = Domain.HL7Message.MessageDateTime.ToString("yyyy-MM-ddTHH:mm:ss");
+
+      //Patient
+      Base.ur_num = Domain.Patient.PrimaryMRN.Value;
+      Base.assigning_authority = Domain.Patient.PrimaryMRN.AssigningAuthorityCode;
+
+      Base.surname = Domain.Patient.Family;
+      Base.fname = Domain.Patient.Given;
+      if (Domain.Patient.DateOfBirth != null)
+      {
+        Base.dob = Domain.Patient.DateOfBirth.ToString("yyyy-MM-dd");
+      }
+      Base.sex = Domain.Patient.Gender.GetLiteral();
+
+      //Model.phone = "";
+      if (Domain.Patient.ContactHome != null)
+      {
+        if (Domain.Patient.ContactHome.PhoneList.Count > 0)
+        {
+          Base.phone = Domain.Patient.ContactHome.PhoneList[0];
+        }
+      }
+      if (Base.phone == string.Empty && Domain.Patient.ContactBusiness != null)
+      {
+        if (Domain.Patient.ContactBusiness.PhoneList.Count > 0)
+        {
+          Base.phone = Domain.Patient.ContactBusiness.PhoneList[0];
+        }
+      }
+
+      //Model.mobile = "";
+      if (Domain.Patient.ContactHome != null)
+      {
+        if (Domain.Patient.ContactHome.MobileList.Count > 0)
+        {
+          Base.mobile = Domain.Patient.ContactHome.MobileList[0];
+        }
+      }
+      if (Base.mobile == null && Domain.Patient.ContactBusiness != null)
+      {
+        if (Domain.Patient.ContactBusiness.MobileList.Count > 0)
+        {
+          Base.mobile = Domain.Patient.ContactBusiness.MobileList[0];
+        }
+      }
+
+
+      Base.language = Domain.Patient.Language;
+      Base.marital_status = Domain.Patient.MaritalStatus;
+      Base.aboriginality = Domain.Patient.Aboriginality;
+
+      if (Domain.Patient.Address != null)
+      {
+        Base.addr_line_1 = Domain.Patient.Address.AddressLineOne;
+        Base.addr_line_2 = Domain.Patient.Address.AddressLineTwo;
+        Base.suburb = Domain.Patient.Address.Suburb;
+        Base.postcode = Domain.Patient.Address.PostCode;
+        Base.state = Domain.Patient.Address.State;
+      }
     }
   }
 }

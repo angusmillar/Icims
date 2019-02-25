@@ -19,8 +19,8 @@ namespace Icims.BusinessLayer
     private DomainModel DomainModel;
     private IMessage Msg;
 
-    public BusinessEngine(IOptions<IcimsSiteContext> IcimsSiteContext, 
-      IBusinessEngineOutcome IBusinessOutcome, 
+    public BusinessEngine(IOptions<IcimsSiteContext> IcimsSiteContext,
+      IBusinessEngineOutcome IBusinessOutcome,
       IIcimsInterfaceModelMapper IIcimsInterfaceModelMapper,
       IIcimsHttpClient IIcimsHttpClient)
     {
@@ -59,67 +59,75 @@ namespace Icims.BusinessLayer
       switch (Msg.MessageTrigger)
       {
         case "A04":
-          if (!AddProcessing())
-          {
-            return IBusinessOutcome;
-          }
-          else
+          if (AddProcessing())
           {
             Common.Models.IcimsInterface.Add Add = IIcimsInterfaceModelMapper.MapToAdd(DomainModel);
-            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Add);
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostAddAsync(Add.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
             IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
             IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
-            return IBusinessOutcome;
-          }          
-        case "A08":
-          if (!UpdateProcessing())
-          {
-            return IBusinessOutcome;
           }
-          else
+          break;
+        case "A08":
+          if (UpdateProcessing())
           {
             Common.Models.IcimsInterface.Update Update = IIcimsInterfaceModelMapper.MapToUpdate(DomainModel);
-            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Update);
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Update.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
             IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
             IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
-            return IBusinessOutcome;
-          }         
+          }
+          break;
         case "A40":
-          if (!MergeProcessing())
-          {
-            return IBusinessOutcome;
-          } else
+          if (MergeProcessing())
           {
             Common.Models.IcimsInterface.Merge Merge = IIcimsInterfaceModelMapper.MapToMerge(DomainModel);
-            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Merge);
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostMergeAsync(Merge.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
             IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
             IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
-            return IBusinessOutcome;
-          }          
+          }
+          break;
         default:
           IBusinessOutcome.Success = false;
           IBusinessOutcome.ErrorMessage = $"Only ADT message of event types A04. A08 and A40 are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message event received was {Msg.MessageTrigger}";
           return IBusinessOutcome;
-      }     
+      }
+
+      return IBusinessOutcome;
+
     }
 
     private bool AddProcessing()
     {
       DomainModel.Action = PostActionType.Add;
-      PopulatePatient();
-      return true;
-
+      return AddUpdateProcessing();
     }
 
     private bool UpdateProcessing()
     {
       DomainModel.Action = PostActionType.Update;
+      return AddUpdateProcessing();
+    }
+
+    private bool MergeProcessing()
+    {
+      if (!PopulatePatient())
+      {
+        return false;
+      }
+      if (!PopulateMergeIdenifiers())
+      {
+        return false;
+      }      
+      return true;
+    }
+
+    private bool AddUpdateProcessing()
+    {
       if (!PopulatePatient())
       {
         return false;
@@ -131,9 +139,21 @@ namespace Icims.BusinessLayer
       return true;
     }
 
-    private bool MergeProcessing()
+
+    private bool PopulateMergeIdenifiers()
     {
-      return true;
+      MedicalRecordNumber MergeMrn;
+      if (ResolveMedicalRecordNumber(Msg.Segment("MRG").Element(1), out MergeMrn))
+      {
+        DomainModel.Patient.PriorMRN = MergeMrn;
+        return true;
+      }
+      else
+      {
+        IBusinessOutcome.Success = false;
+        IBusinessOutcome.ErrorMessage = $"Unable to locate the prior merge medical record number in MRG-1. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
+        return false;
+      }      
     }
 
     private bool PopulatePatient()
@@ -146,11 +166,18 @@ namespace Icims.BusinessLayer
         return false;
       }
 
-      var PID = Msg.Segment("PID");      
-      if (!ResolveMedicalRecordNumber(Msg.Segment("PID").Element(3)))
+      var PID = Msg.Segment("PID");
+      MedicalRecordNumber PatientMrn;
+      if (ResolveMedicalRecordNumber(Msg.Segment("PID").Element(3), out PatientMrn))
       {
+        DomainModel.Patient.PrimaryMRN = PatientMrn;        
+      }
+      else
+      {
+        IBusinessOutcome.Success = false;
+        IBusinessOutcome.ErrorMessage = $"Unable to locate the primary medical record number in PID-3. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
-      }      
+      }
 
       //Patient Name
       foreach (var oXPN in PID.Element(5).RepeatList)
@@ -228,7 +255,7 @@ namespace Icims.BusinessLayer
       var ProviderType = "GMPRC";
       ISegment TargetRolSegment = null;
       foreach (var ROL in Msg.SegmentList("ROL"))
-      {               
+      {
         if (ROL.Field(3).Component(1).AsString.ToUpper() == ProviderRole &&
             ROL.Field(9).Component(1).AsString.ToUpper() == ProviderType)
         {
@@ -243,7 +270,7 @@ namespace Icims.BusinessLayer
         return true;
       }
       else
-      {       
+      {
         DomainModel.Doctor.Given = TargetRolSegment.Field(4).Component(3).AsString;
         DomainModel.Doctor.Family = TargetRolSegment.Field(4).Component(2).AsString;
 
@@ -263,11 +290,11 @@ namespace Icims.BusinessLayer
         ResolveContact(TargetRolSegment.Element(12), DomainModel.Doctor.Contact, PhoneUseType.Work.GetLiteral());
 
         return true;
-      }            
+      }
     }
 
     private bool ResolveContact(IElement ContactElement, Contact Contact, string UseTypeCode)
-    {          
+    {
       foreach (var oXTN in ContactElement.RepeatList)
       {
         if (oXTN.Component(2).AsString.ToUpper() == UseTypeCode &&
@@ -275,7 +302,7 @@ namespace Icims.BusinessLayer
         {
           if (!oXTN.Component(1).IsEmpty)
           {
-            Contact.PhoneList.Add(oXTN.Component(1).AsString);           
+            Contact.PhoneList.Add(oXTN.Component(1).AsString);
           }
         }
         //Primary Mobile
@@ -284,7 +311,7 @@ namespace Icims.BusinessLayer
         {
           if (!oXTN.Component(1).IsEmpty)
           {
-            Contact.MobileList.Add(oXTN.Component(1).AsString);           
+            Contact.MobileList.Add(oXTN.Component(1).AsString);
           }
         }
         //Primary Fax
@@ -293,7 +320,7 @@ namespace Icims.BusinessLayer
         {
           if (!oXTN.Component(1).IsEmpty)
           {
-            Contact.FaxList.Add(oXTN.Component(1).AsString);           
+            Contact.FaxList.Add(oXTN.Component(1).AsString);
           }
         }
         //Primary Email (Correct Version) e.g ^NET^INTERNET^info@westgatemedical.com.au
@@ -302,7 +329,7 @@ namespace Icims.BusinessLayer
         {
           if (!oXTN.Component(1).IsEmpty)
           {
-            Contact.EmailList.Add(oXTN.Component(1).AsString);           
+            Contact.EmailList.Add(oXTN.Component(1).AsString);
           }
         }
         //Primary Email (Incorrect Version on Patients at RMH) e.g angus.millar@iinet.net.au^PRN^NET
@@ -311,7 +338,7 @@ namespace Icims.BusinessLayer
         {
           if (!oXTN.Component(1).IsEmpty)
           {
-            Contact.EmailList.Add(oXTN.Component(1).AsString);            
+            Contact.EmailList.Add(oXTN.Component(1).AsString);
           }
         }
       }
@@ -321,7 +348,7 @@ namespace Icims.BusinessLayer
     private bool ResolveAddress(IElement AddressElement, Address Address)
     {
       if (AddressElement.RepeatList.Count == 0)
-      {        
+      {
         return true;
       }
       else
@@ -350,7 +377,7 @@ namespace Icims.BusinessLayer
         {
           TargetAddress = AddressElement.RepeatList[0];
         }
-        
+
         Address.AddressLineOne = TargetAddress.Component(1).AsString;
         Address.AddressLineTwo = TargetAddress.Component(2).AsString;
         Address.Suburb = TargetAddress.Component(3).AsString;
@@ -360,8 +387,9 @@ namespace Icims.BusinessLayer
       return true;
     }
 
-    private bool ResolveMedicalRecordNumber(IElement PID3)
+    private bool ResolveMedicalRecordNumber(IElement PID3, out MedicalRecordNumber MRN)
     {
+      MRN = new MedicalRecordNumber();
       string Value = string.Empty;
       string AssigningAuthority = string.Empty;
 
@@ -396,13 +424,19 @@ namespace Icims.BusinessLayer
 
       if (Value == string.Empty)
       {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = $"Unable to locate the primary medical record number in PID-3. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
       }
-      DomainModel.Patient.MedicalRecordNumber = Value;
-      DomainModel.Patient.MedicalRecordNumberAssigningAuthorityCode = AssigningAuthority;
+
+      MRN.Value = Value;
+      MRN.AssigningAuthorityCode = AssigningAuthority;
+
+      //DomainModel.Patient.MedicalRecordNumber = Value;
+      //DomainModel.Patient.MedicalRecordNumberAssigningAuthorityCode = AssigningAuthority;
       return true;
     }
+
+   
   }
+
+
 }

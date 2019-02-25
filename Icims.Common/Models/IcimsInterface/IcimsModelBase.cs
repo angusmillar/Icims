@@ -7,7 +7,7 @@ namespace Icims.Common.Models.IcimsInterface
   public abstract class IcimsModelBase
   {
     private const string EmptyStringCode = "empty_str"; 
-    private Dictionary<string, string> ValueDictionay;
+    protected Dictionary<string, string> ValueDictionay;
 
     public IcimsModelBase()
     {
@@ -75,9 +75,7 @@ namespace Icims.Common.Models.IcimsInterface
     public virtual Dictionary<string, string> GetValueDictionary()
     {
       this.ValueDictionay = new Dictionary<string, string>();
-     
-      var result = new Dictionary<string, string>();
-      
+               
       CustomEncode("action", this.action);
       CustomEncode("msgid", this.msgid);
       CustomEncode("msg_datetime", this.msg_datetime);
@@ -97,7 +95,7 @@ namespace Icims.Common.Models.IcimsInterface
       CustomEncode("marital_status", this.marital_status);
       CustomEncode("language", this.language);
       CustomEncode("aboriginality", this.aboriginality);
-      return result;
+      return this.ValueDictionay;
     }
 
 

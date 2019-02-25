@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Icims.Api.Models.Mirth;
 using Icims.Common.Models.BusinessEngine;
 using Icims.BusinessLayer;
-
+using Microsoft.Extensions.Options;
+using Icims.Common.Models.AppSettings;
 
 namespace Icims.Api.Controllers
 {
@@ -16,10 +17,12 @@ namespace Icims.Api.Controllers
   {
     private IBusinessEngine IBusinessEngine;
     private IBusinessEngineInput IBusinessEngineInput;
-    public HL7V2Controller(IBusinessEngine IBusinessEngine, IBusinessEngineInput IBusinessEngineInput)
-    {
+    private readonly IOptions<IcimsSiteContext> IcimsSiteContext;
+    public HL7V2Controller(IBusinessEngine IBusinessEngine, IBusinessEngineInput IBusinessEngineInput, IOptions<IcimsSiteContext> IcimsSiteContext)
+    {      
       this.IBusinessEngine = IBusinessEngine;
       this.IBusinessEngineInput = IBusinessEngineInput;
+      this.IcimsSiteContext = IcimsSiteContext;
     }
 
     // GET api/values
@@ -52,7 +55,7 @@ namespace Icims.Api.Controllers
       catch(Exception Exec)
       {
         Response.Success = false;
-        Response.ErrorMessage = Exec.Message;
+        Response.ErrorMessage = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
         return BadRequest(Response);
       }      
     }

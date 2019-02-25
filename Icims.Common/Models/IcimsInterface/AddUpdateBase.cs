@@ -38,7 +38,7 @@ namespace Icims.Common.Models.IcimsInterface
 
     public override Dictionary<string, string> GetValueDictionary()
     {
-      var result = base.GetValueDictionary();
+      base.GetValueDictionary();
       //Note 'action' is added by the base
       CustomEncode("gp_fname", this.gp_fname);
       CustomEncode("gp_surname", this.gp_surname);
@@ -49,7 +49,7 @@ namespace Icims.Common.Models.IcimsInterface
       CustomEncode("gp_postcode", this.gp_postcode);
       CustomEncode("gp_email", this.gp_email);
       CustomEncode("gp_fax", this.gp_fax);
-      return result;
+      return this.ValueDictionay;
     }
     
 
