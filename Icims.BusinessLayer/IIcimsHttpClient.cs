@@ -1,5 +1,5 @@
-﻿using Icims.Common.Models.IcimsInterface;
-using System.Net.Http;
+﻿using Icims.Common.Models.IcimsHttpClientModel;
+using Icims.Common.Models.IcimsInterface;
 using System.Threading.Tasks;
 
 namespace Icims.BusinessLayer
@@ -7,9 +7,9 @@ namespace Icims.BusinessLayer
   public interface IIcimsHttpClient
   {
     Task<int> GetTester();
-    Task<bool> PostAddAsync(IValueDictionary Data);
-    Task<bool> PostUpdateAsync(IValueDictionary Data);
-    Task<bool> PostMergeAsync(IValueDictionary Data);
+    Task<IIcimsHttpClientOutcome> PostAddAsync(IValueDictionary Data);
+    Task<IIcimsHttpClientOutcome> PostUpdateAsync(IValueDictionary Data);
+    Task<IIcimsHttpClientOutcome> PostMergeAsync(IValueDictionary Data);
 
   }
 }

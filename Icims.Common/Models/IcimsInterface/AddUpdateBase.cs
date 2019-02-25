@@ -40,15 +40,15 @@ namespace Icims.Common.Models.IcimsInterface
     {
       var result = base.GetValueDictionary();
       //Note 'action' is added by the base
-      result.Add("gp_fname", this.gp_fname);
-      result.Add("gp_surname", this.gp_surname);
-      result.Add("gp_addr_line_1", this.gp_addr_line_1);
-      result.Add("gp_addr_line_2", this.gp_addr_line_2);
-      result.Add("gp_suburb", this.gp_suburb);
-      result.Add("gp_state", this.gp_state);
-      result.Add("gp_postcode", this.gp_postcode);
-      result.Add("gp_email", this.gp_email);
-      result.Add("gp_fax", this.gp_fax);
+      CustomEncode("gp_fname", this.gp_fname);
+      CustomEncode("gp_surname", this.gp_surname);
+      CustomEncode("gp_addr_line_1", this.gp_addr_line_1);
+      CustomEncode("gp_addr_line_2", this.gp_addr_line_2);
+      CustomEncode("gp_suburb", this.gp_suburb);
+      CustomEncode("gp_state", this.gp_state);
+      CustomEncode("gp_postcode", this.gp_postcode);
+      CustomEncode("gp_email", this.gp_email);
+      CustomEncode("gp_fax", this.gp_fax);
       return result;
     }
     

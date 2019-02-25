@@ -1,6 +1,7 @@
 ﻿using Icims.Common.Models.AppSettings;
 using Icims.Common.Models.BusinessEngine;
 using Icims.Common.Models.BusinessModel;
+using Icims.Common.Models.IcimsHttpClientModel;
 using Icims.Common.Tools;
 using Microsoft.Extensions.Options;
 using PeterPiper.Hl7.V2.Model;
@@ -62,7 +63,16 @@ namespace Icims.BusinessLayer
           {
             return IBusinessOutcome;
           }
-          break;
+          else
+          {
+            Common.Models.IcimsInterface.Add Add = IIcimsInterfaceModelMapper.MapToAdd(DomainModel);
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Add);
+            IcimsHttpCleintTaskResult.Wait();
+            IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
+            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
+            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            return IBusinessOutcome;
+          }          
         case "A08":
           if (!UpdateProcessing())
           {
@@ -71,27 +81,32 @@ namespace Icims.BusinessLayer
           else
           {
             Common.Models.IcimsInterface.Update Update = IIcimsInterfaceModelMapper.MapToUpdate(DomainModel);
-            Task<bool> x = IIcimsHttpClient.PostUpdateAsync(Update);
-            x.Wait();
-            var zz = x.Result;
-          }
-          break;
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Update);
+            IcimsHttpCleintTaskResult.Wait();
+            IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
+            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
+            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            return IBusinessOutcome;
+          }         
         case "A40":
           if (!MergeProcessing())
           {
             return IBusinessOutcome;
-          }
-          break;
+          } else
+          {
+            Common.Models.IcimsInterface.Merge Merge = IIcimsInterfaceModelMapper.MapToMerge(DomainModel);
+            Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Merge);
+            IcimsHttpCleintTaskResult.Wait();
+            IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
+            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
+            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            return IBusinessOutcome;
+          }          
         default:
           IBusinessOutcome.Success = false;
           IBusinessOutcome.ErrorMessage = $"Only ADT message of event types A04. A08 and A40 are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message event received was {Msg.MessageTrigger}";
           return IBusinessOutcome;
-      }
-
-      //NOw the DomainModel is successfully populated, time to map to Icims Interface Model
-
-
-      return IBusinessOutcome;
+      }     
     }
 
     private bool AddProcessing()

@@ -20,8 +20,8 @@ namespace Icims.Common.Models.IcimsInterface
     {
       var result = base.GetValueDictionary();
       //Note 'action' is added by the base
-      result.Add("prior_ur", this.prior_ur);
-      result.Add("prior_assigning_authority", this.prior_assigning_authority);     
+      CustomEncode("prior_ur", this.prior_ur);
+      CustomEncode("prior_assigning_authority", this.prior_assigning_authority);     
       return result;
     }
   }

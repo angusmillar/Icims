@@ -7,5 +7,6 @@ namespace Icims.BusinessLayer
   {
     Add MapToAdd(DomainModel Domain);
     Update MapToUpdate(DomainModel Domain);
+    Merge MapToMerge(DomainModel Domain);
   }
 }

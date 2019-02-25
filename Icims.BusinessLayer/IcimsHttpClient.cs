@@ -1,10 +1,12 @@
 ﻿using Icims.Common.Models.AppSettings;
+using Icims.Common.Models.IcimsHttpClientModel;
+using Icims.Common.Models.IcimsInterface;
+using Icims.Common.Tools;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Icims.Common.Tools;
-using Icims.Common.Models.IcimsInterface;
 
 namespace Icims.BusinessLayer
 {
@@ -31,34 +33,38 @@ namespace Icims.BusinessLayer
       HttpClient.DefaultRequestHeaders.Add("Accept", "*/*");
       HttpClient.DefaultRequestHeaders.Add("Authorization", IcimsSiteContext.Value.AuthorizationToken);
     }
-    
+
     public async Task<int> GetTester()
     {
       var data = await HttpClient.GetStringAsync("/add");
       return data.Length;
     }
-    
-    public async Task<bool> PostAddAsync(IValueDictionary Data)
-    {     
-      return await PostAsync(SendActionType.Add, Data);      
-    }
 
-    public async Task<bool> PostUpdateAsync(IValueDictionary Data)
+    public async Task<IIcimsHttpClientOutcome> PostAddAsync(IValueDictionary Data)
     {
-      return await PostAsync(SendActionType.Update, Data);      
+      return await PostAsync(SendActionType.Add, Data);
     }
 
-    public async Task<bool> PostMergeAsync(IValueDictionary Data)
+    public async Task<IIcimsHttpClientOutcome> PostUpdateAsync(IValueDictionary Data)
     {
-      return await PostAsync(SendActionType.Merge, Data);      
+      return await PostAsync(SendActionType.Update, Data);
     }
 
-    private async Task<bool> PostAsync(SendActionType ActionType, IValueDictionary Data)
+    public async Task<IIcimsHttpClientOutcome> PostMergeAsync(IValueDictionary Data)
+    {
+      return await PostAsync(SendActionType.Merge, Data);
+    }
+
+    private async Task<IIcimsHttpClientOutcome> PostAsync(SendActionType ActionType, IValueDictionary Data)
     {
       var DataDictionary = Data.GetValueDictionary();
       var EncodedData = new FormUrlEncodedContent(DataDictionary);
-      var data = await HttpClient.PostAsync(ActionType.GetLiteral(), EncodedData);
-      return data.IsSuccessStatusCode;
+      var HttpResponse = await HttpClient.PostAsync(ActionType.GetLiteral(), EncodedData);
+      var Outcome = new IcimsHttpClientOutcome();
+      Outcome.HttpStatusCode = HttpResponse.StatusCode;
+      var jsonString = await HttpResponse.Content.ReadAsStringAsync();
+      Outcome.IcimsResponse = JsonConvert.DeserializeObject<IcimsResponse>(jsonString);
+      return Outcome;
     }
 
   }

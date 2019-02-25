@@ -8,19 +8,26 @@ using System.Text;
 namespace Icims.BusinessLayer
 {
   public class IcimsInterfaceModelMapper : IIcimsInterfaceModelMapper
-  {
-    public Update MapToUpdate(DomainModel Domain)
-    {
-      var Update = new Update();
-      MapAddUpdate(Domain, Update as AddUpdateBase);      
-      return Update;
-    }
-
+  {    
     public Add MapToAdd(DomainModel Domain)
     {
       var Add = new Add();
       MapAddUpdate(Domain, Add as AddUpdateBase);
       return Add;
+    }
+
+    public Update MapToUpdate(DomainModel Domain)
+    {
+      var Update = new Update();
+      MapAddUpdate(Domain, Update as AddUpdateBase);
+      return Update;
+    }
+
+    public Merge MapToMerge(DomainModel Domain)
+    {
+      var Merge = new Merge();
+      //MapAddUpdate(Domain, Merge as AddUpdateBase);
+      return Merge;
     }
 
     private void MapAddUpdate(DomainModel Domain, AddUpdateBase AddUpdate)

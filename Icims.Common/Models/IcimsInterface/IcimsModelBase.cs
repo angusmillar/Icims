@@ -6,6 +6,14 @@ namespace Icims.Common.Models.IcimsInterface
 {
   public abstract class IcimsModelBase
   {
+    private const string EmptyStringCode = "empty_str"; 
+    private Dictionary<string, string> ValueDictionay;
+
+    public IcimsModelBase()
+    {
+      this.ValueDictionay = new Dictionary<string, string>();
+    }
+
     /** @property {string} action - the ICIMS action string 'addpatient', 'updatepatient' */
     public abstract string action { get; }
 
@@ -66,27 +74,47 @@ namespace Icims.Common.Models.IcimsInterface
 
     public virtual Dictionary<string, string> GetValueDictionary()
     {
+      this.ValueDictionay = new Dictionary<string, string>();
+     
       var result = new Dictionary<string, string>();
-      result.Add("action", this.action);
-      result.Add("msgid", this.msgid);
-      result.Add("msg_datetime", this.msg_datetime);
-      result.Add("ur_num", this.ur_num);
-      result.Add("assigning_authority", this.assigning_authority);
-      result.Add("fname", this.fname);
-      result.Add("surname", this.surname);
-      result.Add("dob", this.dob);
-      result.Add("sex", this.sex);
-      result.Add("addr_line_1", this.addr_line_1);
-      result.Add("addr_line_2", this.addr_line_2);
-      result.Add("suburb", this.suburb);
-      result.Add("state", this.state);
-      result.Add("postcode", this.postcode);
-      result.Add("phone", this.phone);
-      result.Add("mobile", this.mobile);
-      result.Add("marital_status", this.marital_status);
-      result.Add("language", this.language);
-      result.Add("aboriginality", this.aboriginality);
+      
+      CustomEncode("action", this.action);
+      CustomEncode("msgid", this.msgid);
+      CustomEncode("msg_datetime", this.msg_datetime);
+      CustomEncode("ur_num", this.ur_num);
+      CustomEncode("assigning_authority", this.assigning_authority);
+      CustomEncode("fname", this.fname);
+      CustomEncode("surname", this.surname);
+      CustomEncode("dob", this.dob);
+      CustomEncode("sex", this.sex);
+      CustomEncode("addr_line_1", this.addr_line_1);
+      CustomEncode("addr_line_2", this.addr_line_2);
+      CustomEncode("suburb", this.suburb);
+      CustomEncode("state", this.state);
+      CustomEncode("postcode", this.postcode);
+      CustomEncode("phone", this.phone);
+      CustomEncode("mobile", this.mobile);
+      CustomEncode("marital_status", this.marital_status);
+      CustomEncode("language", this.language);
+      CustomEncode("aboriginality", this.aboriginality);
       return result;
+    }
+
+
+    protected void CustomEncode(string Name, string Value)
+    {
+      if (Value != null)
+      {
+        if (Value == "\"\"")
+        {
+          //Note ICIMS is requiring that HL7 Null e.g |""| is to be sent as "empty_str";
+          this.ValueDictionay.Add(Name, EmptyStringCode);
+        }
+        else
+        {
+          this.ValueDictionay.Add(Name, Value);
+        }
+      }
     }
   }
 }

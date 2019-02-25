@@ -22,7 +22,7 @@ namespace Icims.Test
       IOptions<IcimsSiteContext> IcimsSiteContextOptions = Options.Create(new IcimsSiteContext()
       {
         AuthorizationToken = "none",
-        Endpoint = "http://localhost:8888/fhir/Patient/_search",
+        Endpoint = "http://localhost:60823/api/mock/",
         NameOfThisService = "Icims Proxy Service Testing",
         PrimaryMRNAssigningAuthorityCode = "RMH"
       });
