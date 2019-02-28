@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
 
 namespace Icims.Api
 {
@@ -16,34 +14,57 @@ namespace Icims.Api
   {
     public static void Main(string[] args)
     {
-      string consoleCommand = "--console";
-      var isService = !(Debugger.IsAttached || args.Contains(consoleCommand));
-      var pathToContentRoot = Directory.GetCurrentDirectory();
-      var webHostArgs = args.Where(arg => arg != consoleCommand).ToArray();
+      var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+      try
+      {
+        logger.Info("Icims Proxy Service starting up");
+        string consoleCommand = "--console";
+        var isService = !(Debugger.IsAttached || args.Contains(consoleCommand));
+        var pathToContentRoot = Directory.GetCurrentDirectory();
+        var webHostArgs = args.Where(arg => arg != consoleCommand).ToArray();
 
-      if (isService)
-      {
-        var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-        pathToContentRoot = Path.GetDirectoryName(pathToExe);
-      }
-      
-      var host = WebHost.CreateDefaultBuilder(webHostArgs)
-        .UseContentRoot(pathToContentRoot)
-        .UseStartup<Startup>()
-        .Build();
+        if (isService)
+        {
+          var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
+          pathToContentRoot = Path.GetDirectoryName(pathToExe);
+        }
 
-      if (isService)
-      {
-        host.RunAsService();
+        IWebHost Host = BuildWebHost(args).UseContentRoot(pathToContentRoot)
+          .UseStartup<Startup>()
+          .Build();
+
+        if (isService)
+        {
+          Host.RunAsService();
+         
+        }
+        else
+        {
+          Host.Run();         
+        }
       }
-      else
+      catch (Exception ex)
       {
-        host.Run();
-      }            
+        //NLog: catch setup errors
+        logger.Error(ex, "Stopped program because of exception");
+        throw;
+      }
+      finally
+      {
+        // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
+        NLog.LogManager.Shutdown();
+      }      
     }
 
-    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-        WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>();
+    public static IWebHostBuilder BuildWebHost(string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .UseStartup<Startup>()
+        .ConfigureLogging(logging =>
+        {
+          logging.ClearProviders();
+          logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+        })
+        .UseNLog();  // NLog: set-up NLog for Dependency injection
+    
   }
 }

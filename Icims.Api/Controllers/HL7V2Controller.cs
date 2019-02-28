@@ -9,6 +9,7 @@ using Icims.BusinessLayer;
 using Microsoft.Extensions.Options;
 using Icims.Common.Models.AppSettings;
 using Icims.Common.Tools;
+using Microsoft.Extensions.Logging;
 
 namespace Icims.Api.Controllers
 {
@@ -20,12 +21,19 @@ namespace Icims.Api.Controllers
     private IBusinessEngineInput IBusinessEngineInput;
     private readonly IOptions<IcimsSiteContext> IcimsSiteContext;
     private readonly IMirthResponse IMirthResponse;
-    public HL7V2Controller(IBusinessEngine IBusinessEngine, IBusinessEngineInput IBusinessEngineInput, IOptions<IcimsSiteContext> IcimsSiteContext, IMirthResponse IMirthResponse)
+    private readonly ILogger<HL7V2Controller> ILogger;
+
+    public HL7V2Controller(IBusinessEngine IBusinessEngine, 
+      IBusinessEngineInput IBusinessEngineInput, 
+      IOptions<IcimsSiteContext> IcimsSiteContext, 
+      IMirthResponse IMirthResponse,
+      ILogger<HL7V2Controller> ILogger)
     {      
       this.IBusinessEngine = IBusinessEngine;
       this.IBusinessEngineInput = IBusinessEngineInput;
       this.IcimsSiteContext = IcimsSiteContext;
       this.IMirthResponse = IMirthResponse;
+      this.ILogger = ILogger;
     }
 
     // GET api/values
@@ -38,7 +46,14 @@ namespace Icims.Api.Controllers
     // POST api/values
     [HttpPost]
     public ActionResult<IMirthResponse> Post(MirthMessage MirthMessage)
-    {      
+    {
+      //ILogger.LogTrace("Angus Did it work! Trace YES");
+      //ILogger.LogDebug("Angus Did it work! Debug YES");
+      //ILogger.LogError("Angus Did it work! Error YES");
+      //ILogger.LogCritical("Angus Did it work! Critical YES");
+      //ILogger.LogInformation("Angus Did it work! Info YES");      
+      //ILogger.LogWarning("Angus Did it work! Warning YES");
+
       try
       {
         IBusinessEngineInput.HL7V2Message = MirthMessage.HL7V2Message;
