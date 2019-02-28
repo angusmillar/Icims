@@ -2,6 +2,17 @@
 
 namespace Icims.Common.Models.BusinessModel
 {
+
+  public enum StatusCode
+  {
+    [EnumLiteral("ok")]
+    Ok,
+    [EnumLiteral("error")]
+    Error,
+    [EnumLiteral("queue")]
+    Queue
+  };
+
   public enum PostActionType
   {
     [EnumLiteral("addpatient")]

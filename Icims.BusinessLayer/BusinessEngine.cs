@@ -39,16 +39,16 @@ namespace Icims.BusinessLayer
       }
       catch (Exception Exec)
       {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = Exec.Message;
+        IBusinessOutcome.StatusCode = StatusCode.Error;        
+        IBusinessOutcome.Message = Exec.Message;
         return IBusinessOutcome;
       }
 
       //Check it is an ADT message type
       if (Msg.MessageType != "ADT")
-      {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = $"Only message types of ADT are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message type received was {Msg.MessageType}";
+      {        
+        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.Message = $"Only message types of ADT are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message type received was {Msg.MessageType}";
         return IBusinessOutcome;
       }
 
@@ -65,8 +65,9 @@ namespace Icims.BusinessLayer
             Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostAddAsync(Add.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
-            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
-            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            IBusinessOutcome.StatusCode = SetMirthStatusBasedOnHttpClientResponse(IcimsHttpClientOutcome);
+            IBusinessOutcome.Message = IcimsHttpClientOutcome.Message;
+            IBusinessOutcome.IcimsResponse = IcimsHttpClientOutcome.IcimsResponse;            
           }
           break;
         case "A08":
@@ -76,8 +77,9 @@ namespace Icims.BusinessLayer
             Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostUpdateAsync(Update.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
-            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
-            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            IBusinessOutcome.StatusCode = SetMirthStatusBasedOnHttpClientResponse(IcimsHttpClientOutcome);
+            IBusinessOutcome.Message = IcimsHttpClientOutcome.Message;
+            IBusinessOutcome.IcimsResponse = IcimsHttpClientOutcome.IcimsResponse;
           }
           break;
         case "A40":
@@ -87,18 +89,36 @@ namespace Icims.BusinessLayer
             Task<IIcimsHttpClientOutcome> IcimsHttpCleintTaskResult = IIcimsHttpClient.PostMergeAsync(Merge.GetValueDictionary());
             IcimsHttpCleintTaskResult.Wait();
             IIcimsHttpClientOutcome IcimsHttpClientOutcome = IcimsHttpCleintTaskResult.Result;
-            IBusinessOutcome.Success = IcimsHttpClientOutcome.IsSuccessStatusCode;
-            IBusinessOutcome.ErrorMessage = $"state: {IcimsHttpClientOutcome.IcimsResponse.state}, error: {IcimsHttpClientOutcome.IcimsResponse.error}";
+            IBusinessOutcome.StatusCode = SetMirthStatusBasedOnHttpClientResponse(IcimsHttpClientOutcome);
+            IBusinessOutcome.Message = IcimsHttpClientOutcome.Message;
+            IBusinessOutcome.IcimsResponse = IcimsHttpClientOutcome.IcimsResponse;
           }
           break;
         default:
-          IBusinessOutcome.Success = false;
-          IBusinessOutcome.ErrorMessage = $"Only ADT message of event types A04. A08 and A40 are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message event received was {Msg.MessageTrigger}";
+          IBusinessOutcome.StatusCode = StatusCode.Error;
+          IBusinessOutcome.Message = $"Only ADT message of event types A04. A08 and A40 are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message event received was {Msg.MessageTrigger}";
+          IBusinessOutcome.IcimsResponse = null;
           return IBusinessOutcome;
       }
 
       return IBusinessOutcome;
 
+    }
+
+    private StatusCode SetMirthStatusBasedOnHttpClientResponse(IIcimsHttpClientOutcome IcimsHttpClientOutcome)
+    {
+      if (IcimsHttpClientOutcome.HttpStatusCode == System.Net.HttpStatusCode.OK)
+      {
+        return StatusCode.Ok;
+      }
+      else if (IcimsHttpClientOutcome.HttpStatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+      {
+        return StatusCode.Queue;
+      }
+      else
+      {
+        return StatusCode.Error;
+      }      
     }
 
     private bool AddProcessing()
@@ -150,8 +170,8 @@ namespace Icims.BusinessLayer
       }
       else
       {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = $"Unable to locate the prior merge medical record number in MRG-1. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
+        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.Message = $"Unable to locate the prior merge medical record number in MRG-1. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
       }      
     }
@@ -161,8 +181,8 @@ namespace Icims.BusinessLayer
       //Check there is a PID segment with the patient info
       if (Msg.SegmentCount("PID") != 1)
       {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = $"There is either none or more than one PID segment in the received message. PID segment count was : {Msg.SegmentCount("PID")}. There must be one and only one PID segment.";
+        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.Message = $"There is either none or more than one PID segment in the received message. PID segment count was : {Msg.SegmentCount("PID")}. There must be one and only one PID segment.";
         return false;
       }
 
@@ -174,8 +194,8 @@ namespace Icims.BusinessLayer
       }
       else
       {
-        IBusinessOutcome.Success = false;
-        IBusinessOutcome.ErrorMessage = $"Unable to locate the primary medical record number in PID-3. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
+        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.Message = $"Unable to locate the primary medical record number in PID-3. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
       }
 
@@ -201,8 +221,8 @@ namespace Icims.BusinessLayer
         }
         else
         {
-          IBusinessOutcome.Success = false;
-          IBusinessOutcome.ErrorMessage = $"Unable to convert the patient date of birth to a valid date. The valid found was: {PID.Field(7).AsString}";
+          IBusinessOutcome.StatusCode = StatusCode.Error;
+          IBusinessOutcome.Message = $"Unable to convert the patient date of birth to a valid date. The valid found was: {PID.Field(7).AsString}";
           return false;
         }
       }
@@ -225,8 +245,8 @@ namespace Icims.BusinessLayer
             DomainModel.Patient.Gender = Gender.Unknown;
             break;
           default:
-            IBusinessOutcome.Success = false;
-            IBusinessOutcome.ErrorMessage = $"Unknown patient gender code. Code found was : {PID.Field(8).AsString}";
+            IBusinessOutcome.StatusCode = StatusCode.Error;
+            IBusinessOutcome.Message = $"Unknown patient gender code. Code found was : {PID.Field(8).AsString}";
             return false;
         }
       }

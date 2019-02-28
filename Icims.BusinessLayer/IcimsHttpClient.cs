@@ -68,27 +68,22 @@ namespace Icims.BusinessLayer
        
         Outcome.HttpStatusCode = HttpResponse.StatusCode;
         var jsonString = await HttpResponse.Content.ReadAsStringAsync();
+        Outcome.Message = "Icims Response Received";
         Outcome.IcimsResponse = JsonConvert.DeserializeObject<IcimsResponse>(jsonString);
         return Outcome;
       }
       catch(HttpRequestException HttpRequestException)
       {
         Outcome.HttpStatusCode = System.Net.HttpStatusCode.ServiceUnavailable;
-        Outcome.IcimsResponse = new IcimsResponse()
-        {
-          error = $"{HttpRequestException.Message}, Endpoint: {IcimsSiteContext.Value.Endpoint}, Action: {ActionType.GetLiteral()}",
-          state = IcimsSiteContext.Value.NameOfThisService
-        };
+        Outcome.Message = $"Unable to contact Icims on Endpoint: {IcimsSiteContext.Value.Endpoint} for Action: {ActionType.GetLiteral()}. HttpRequestException Message: {HttpRequestException.Message}";
+        Outcome.IcimsResponse = null;
         return Outcome;
       }
       catch(Exception exec)
       {
         Outcome.HttpStatusCode = System.Net.HttpStatusCode.ServiceUnavailable;
-        Outcome.IcimsResponse = new IcimsResponse()
-        {
-          error = $"{exec.Message}, Endpoint: {IcimsSiteContext.Value.Endpoint}, Action: {ActionType.GetLiteral()}",
-          state = IcimsSiteContext.Value.NameOfThisService
-        };
+        Outcome.Message = $"Unable to contact Icims on Endpoint: {IcimsSiteContext.Value.Endpoint} for Action: {ActionType.GetLiteral()}. Exception Message: {exec.Message}";
+        Outcome.IcimsResponse = null;
         return Outcome;
       }
     }

@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Icims.Common.Models.IcimsInterface;
 
 namespace Icims.Api.Models.Mirth
 {
-  public class MirthResponse
-  {
-    public bool Success { get; set; }
-    public string ErrorMessage { get; set; }
+  public class MirthResponse : IMirthResponse
+  {   
+    public string StatusCode { get; set; }
+    public string Message { get; set; }
+    public bool HasIcimsResponse { get { return this.IcimsResponse != null; } }
+    public IIcimsResponse IcimsResponse { get; set; }
   }
+
+  
+
 }

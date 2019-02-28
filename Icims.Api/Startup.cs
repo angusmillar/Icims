@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Icims.Common.Models.BusinessEngine;
 using Icims.BusinessLayer;
+using Icims.Api.Models.Mirth;
 
 namespace Icims.Api
 {
@@ -31,6 +32,7 @@ namespace Icims.Api
       services.AddScoped<BusinessLayer.IBusinessEngine, Icims.BusinessLayer.BusinessEngine>();
       services.AddScoped<IBusinessEngineInput, BusinessEngineInput>();
       services.AddScoped<IBusinessEngineOutcome, BusinessEngineOutcome>();
+      services.AddScoped<IMirthResponse, MirthResponse>();      
       services.AddScoped<IIcimsInterfaceModelMapper, IcimsInterfaceModelMapper>();
 
       

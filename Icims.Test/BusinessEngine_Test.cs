@@ -1,6 +1,7 @@
 using Icims.BusinessLayer;
 using Icims.Common.Models.AppSettings;
 using Icims.Common.Models.BusinessEngine;
+using Icims.Common.Models.BusinessModel;
 using Icims.Common.Models.IcimsHttpClientModel;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -55,8 +56,8 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.IsTrue(Result.Success, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.ErrorMessage, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
+      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
     }
     
     [TestMethod]
@@ -73,8 +74,8 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.IsTrue(Result.Success, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.ErrorMessage, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
+      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
     }
 
     [TestMethod]
@@ -91,8 +92,8 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.IsTrue(Result.Success, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.ErrorMessage, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
+      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
     }
 
 

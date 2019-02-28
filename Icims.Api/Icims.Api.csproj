@@ -28,4 +28,10 @@
     <Folder Include="CompositionRoot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Doco\InstallServiceReadMe.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

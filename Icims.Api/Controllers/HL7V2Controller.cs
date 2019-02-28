@@ -8,6 +8,7 @@ using Icims.Common.Models.BusinessEngine;
 using Icims.BusinessLayer;
 using Microsoft.Extensions.Options;
 using Icims.Common.Models.AppSettings;
+using Icims.Common.Tools;
 
 namespace Icims.Api.Controllers
 {
@@ -18,11 +19,13 @@ namespace Icims.Api.Controllers
     private IBusinessEngine IBusinessEngine;
     private IBusinessEngineInput IBusinessEngineInput;
     private readonly IOptions<IcimsSiteContext> IcimsSiteContext;
-    public HL7V2Controller(IBusinessEngine IBusinessEngine, IBusinessEngineInput IBusinessEngineInput, IOptions<IcimsSiteContext> IcimsSiteContext)
+    private readonly IMirthResponse IMirthResponse;
+    public HL7V2Controller(IBusinessEngine IBusinessEngine, IBusinessEngineInput IBusinessEngineInput, IOptions<IcimsSiteContext> IcimsSiteContext, IMirthResponse IMirthResponse)
     {      
       this.IBusinessEngine = IBusinessEngine;
       this.IBusinessEngineInput = IBusinessEngineInput;
       this.IcimsSiteContext = IcimsSiteContext;
+      this.IMirthResponse = IMirthResponse;
     }
 
     // GET api/values
@@ -34,29 +37,33 @@ namespace Icims.Api.Controllers
     
     // POST api/values
     [HttpPost]
-    public ActionResult<MirthResponse> Post(MirthMessage MirthMessage)
-    {
-      var Response = new MirthResponse();
+    public ActionResult<IMirthResponse> Post(MirthMessage MirthMessage)
+    {      
       try
       {
         IBusinessEngineInput.HL7V2Message = MirthMessage.HL7V2Message;
         IBusinessEngineOutcome IBusinessOutcome = IBusinessEngine.Process(IBusinessEngineInput);
-        Response.Success = IBusinessOutcome.Success;
-        Response.ErrorMessage = IBusinessOutcome.ErrorMessage;
-        if (Response.Success)
+        IMirthResponse.StatusCode = IBusinessOutcome.StatusCode.GetLiteral();
+        IMirthResponse.Message = IBusinessOutcome.Message;
+        IMirthResponse.IcimsResponse = IBusinessOutcome.IcimsResponse;
+        switch (IBusinessOutcome.StatusCode)
         {
-          return Ok(Response);
-        }
-        else
-        {
-          return BadRequest(Response);
-        }        
+          case Common.Models.BusinessModel.StatusCode.Ok:
+            return Ok(IMirthResponse);
+          case Common.Models.BusinessModel.StatusCode.Queue:
+            return BadRequest(IMirthResponse);
+          case Common.Models.BusinessModel.StatusCode.Error:
+            return BadRequest(IMirthResponse);          
+          default:
+            throw new System.ComponentModel.InvalidEnumArgumentException(IBusinessOutcome.StatusCode.GetLiteral(), (int)IBusinessOutcome.StatusCode, typeof(Common.Models.BusinessModel.StatusCode));
+        }               
       }
       catch(Exception Exec)
       {
-        Response.Success = false;
-        Response.ErrorMessage = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
-        return BadRequest(Response);
+        IMirthResponse.StatusCode = Common.Models.BusinessModel.StatusCode.Error.GetLiteral();
+        IMirthResponse.Message = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
+        IMirthResponse.IcimsResponse = null;
+        return BadRequest(IMirthResponse);
       }      
     }
 
