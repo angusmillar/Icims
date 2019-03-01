@@ -78,6 +78,7 @@ namespace Icims.Api.Controllers
         IMirthResponse.StatusCode = Common.Models.BusinessModel.StatusCode.Error.GetLiteral();
         IMirthResponse.Message = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
         IMirthResponse.IcimsResponse = null;
+        ILogger.LogCritical(Exec, $"HL7 Msg: {MirthMessage.HL7V2Message}, Uncaught Exception: { Exec.Message}");
         return BadRequest(IMirthResponse);
       }      
     }

@@ -3,6 +3,7 @@ using Icims.Common.Models.BusinessEngine;
 using Icims.Common.Models.BusinessModel;
 using Icims.Common.Models.IcimsHttpClientModel;
 using Icims.Common.Tools;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PeterPiper.Hl7.V2.Model;
 using System;
@@ -18,20 +19,24 @@ namespace Icims.BusinessLayer
     private readonly IIcimsHttpClient IIcimsHttpClient;
     private DomainModel DomainModel;
     private IMessage Msg;
+    private readonly ILogger<BusinessEngine> ILogger;
 
     public BusinessEngine(IOptions<IcimsSiteContext> IcimsSiteContext,
       IBusinessEngineOutcome IBusinessOutcome,
       IIcimsInterfaceModelMapper IIcimsInterfaceModelMapper,
-      IIcimsHttpClient IIcimsHttpClient)
+      IIcimsHttpClient IIcimsHttpClient,
+      ILogger<BusinessEngine> ILogger)
     {
       this.IcimsSiteContext = IcimsSiteContext;
       this.IBusinessOutcome = IBusinessOutcome;
       this.IIcimsInterfaceModelMapper = IIcimsInterfaceModelMapper;
       this.IIcimsHttpClient = IIcimsHttpClient;
+      this.ILogger = ILogger;
     }
 
     public IBusinessEngineOutcome Process(IBusinessEngineInput BusinessEngineInput)
     {
+      //ILogger.LogDebug("### ANGUS TEST ####");
       //Parse the V2 Message
       try
       {
