@@ -46,6 +46,8 @@ use the Windows Services tool (Windows Key and type 'Services')
  
 When service is started open a browser and navigate to http://localhost:5000/api/hl7v2 to check see that the web application running.
 
+Mirth will need to be setup to POST to http://localhost:5000/api/hl7v2
+
 Before releasing new version of service the current running instance must be stopped. 
 For this we can use command sc stop AspNetWindowsService or the Windows Services tool. 
 
