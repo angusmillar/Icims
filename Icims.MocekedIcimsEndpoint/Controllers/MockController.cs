@@ -96,7 +96,7 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
         if (!TestValue("addr_line_1", Data.addr_line_1, "5 Melrose Ct", out Response)) return BadRequest(Response);
         if (!TestValue("addr_line_2", Data.addr_line_2, null, out Response)) return BadRequest(Response);
         if (!TestValue("assigning_authority", Data.assigning_authority, "RMH", out Response)) return BadRequest(Response);
-        if (!TestValue("dob", Data.dob, "1987-02-23", out Response)) return BadRequest(Response);
+        if (!TestValue("dob", Data.dob, "1987-02-23T00:00:00", out Response)) return BadRequest(Response);
         if (!TestValue("fname", Data.fname, "James", out Response)) return BadRequest(Response);
         if (!TestValue("gp_addr_line_1", Data.gp_addr_line_1, null, out Response)) return BadRequest(Response);
         if (!TestValue("gp_addr_line_2", Data.gp_addr_line_2, null, out Response)) return BadRequest(Response);
@@ -107,8 +107,8 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
         if (!TestValue("gp_state", Data.gp_state, null, out Response)) return BadRequest(Response);
         if (!TestValue("gp_suburb", Data.gp_suburb, null, out Response)) return BadRequest(Response);
         if (!TestValue("gp_surname", Data.gp_surname, "Szer", out Response)) return BadRequest(Response);
-        if (!TestValue("language", Data.language, "1201^English^SPOKL", out Response)) return BadRequest(Response);
-        if (!TestValue("marital_status", Data.marital_status, "5^Married^MARRY", out Response)) return BadRequest(Response);
+        if (!TestValue("language", Data.language, "1201", out Response)) return BadRequest(Response);
+        if (!TestValue("marital_status", Data.marital_status, "5", out Response)) return BadRequest(Response);
         if (!TestValue("mobile", Data.mobile, null, out Response)) return BadRequest(Response);
         if (!TestValue("msgid", Data.msgid, "330465171", out Response)) return BadRequest(Response);
         if (!TestValue("msg_datetime", Data.msg_datetime, "2017-04-03T12:24:46", out Response)) return BadRequest(Response);
@@ -121,8 +121,10 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
         if (!TestValue("ur_num", Data.ur_num, "3008781", out Response)) return BadRequest(Response);
       }
 
-     //return Ok(new IcimsResponse() { state = "Ok", error = "No Error" });
-     return BadRequest(new IcimsResponse() { state = "Error", error = "Testing Only" });
+     return Ok(new IcimsResponse() { state = "Ok", error = "No Error" });
+      
+     //Debug force error
+     //return BadRequest(new IcimsResponse() { state = "Error", error = "Testing Only" });
 
     }
     

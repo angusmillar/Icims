@@ -86,7 +86,10 @@ namespace Icims.BusinessLayer
       Base.fname = Domain.Patient.Given;
       if (Domain.Patient.DateOfBirth != null)
       {
-        Base.dob = Domain.Patient.DateOfBirth.ToString("yyyy-MM-dd");
+        Base.dob = Domain.Patient.DateOfBirth.ToString("yyyy-MM-ddTHH:mm:ss");
+        //I believe the above is wrong and below correct, but above it is what the older 
+        //RMH interface did so sticking with it for now.
+        //Base.dob = Domain.Patient.DateOfBirth.ToString("yyyy-MM-dd");
       }
       Base.sex = Domain.Patient.Gender.GetLiteral();
 

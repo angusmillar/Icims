@@ -257,9 +257,9 @@ namespace Icims.BusinessLayer
       }
 
       //ToDo: Here we seem to send the whole Field e.g 5^Married^MARRY, is this correct
-      DomainModel.Patient.MaritalStatus = PID.Field(16).AsString;
+      DomainModel.Patient.MaritalStatus = PID.Field(16).Component(1).AsString;
       //ToDo: Here we seem to send the whole Field e.g 1201^English^SPOKL, is this correct
-      DomainModel.Patient.Language = PID.Field(15).AsString;
+      DomainModel.Patient.Language = PID.Field(15).Component(1).AsString;
 
       DomainModel.Patient.Aboriginality = PID.Field(10).Component(1).AsString;
 
