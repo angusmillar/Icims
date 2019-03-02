@@ -44,7 +44,7 @@ namespace Icims.BusinessLayer
       }
       catch (Exception Exec)
       {
-        IBusinessOutcome.StatusCode = StatusCode.Error;        
+        IBusinessOutcome.StatusCode = StatusCode.error;        
         IBusinessOutcome.Message = Exec.Message;
         return IBusinessOutcome;
       }
@@ -52,7 +52,7 @@ namespace Icims.BusinessLayer
       //Check it is an ADT message type
       if (Msg.MessageType != "ADT")
       {        
-        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.StatusCode = StatusCode.error;
         IBusinessOutcome.Message = $"Only message types of ADT are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message type received was {Msg.MessageType}";
         return IBusinessOutcome;
       }
@@ -100,7 +100,7 @@ namespace Icims.BusinessLayer
           }
           break;
         default:
-          IBusinessOutcome.StatusCode = StatusCode.Error;
+          IBusinessOutcome.StatusCode = StatusCode.error;
           IBusinessOutcome.Message = $"Only ADT message of event types A04. A08 and A40 are supported by the {IcimsSiteContext.Value.NameOfThisService}. The message event received was {Msg.MessageTrigger}";
           IBusinessOutcome.IcimsResponse = null;
           return IBusinessOutcome;
@@ -114,15 +114,15 @@ namespace Icims.BusinessLayer
     {
       if (IcimsHttpClientOutcome.HttpStatusCode == System.Net.HttpStatusCode.OK)
       {
-        return StatusCode.Ok;
+        return StatusCode.ok;
       }
       else if (IcimsHttpClientOutcome.HttpStatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
       {
-        return StatusCode.Queue;
+        return StatusCode.queue;
       }
       else
       {
-        return StatusCode.Error;
+        return StatusCode.error;
       }      
     }
 
@@ -175,7 +175,7 @@ namespace Icims.BusinessLayer
       }
       else
       {
-        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.StatusCode = StatusCode.error;
         IBusinessOutcome.Message = $"Unable to locate the prior merge medical record number in MRG-1. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
       }      
@@ -186,7 +186,7 @@ namespace Icims.BusinessLayer
       //Check there is a PID segment with the patient info
       if (Msg.SegmentCount("PID") != 1)
       {
-        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.StatusCode = StatusCode.error;
         IBusinessOutcome.Message = $"There is either none or more than one PID segment in the received message. PID segment count was : {Msg.SegmentCount("PID")}. There must be one and only one PID segment.";
         return false;
       }
@@ -199,7 +199,7 @@ namespace Icims.BusinessLayer
       }
       else
       {
-        IBusinessOutcome.StatusCode = StatusCode.Error;
+        IBusinessOutcome.StatusCode = StatusCode.error;
         IBusinessOutcome.Message = $"Unable to locate the primary medical record number in PID-3. Either many are marked as 'MR' and have no AssigningAuthority code or none have the AssigningAuthority code of {IcimsSiteContext.Value.PrimaryMRNAssigningAuthorityCode}.";
         return false;
       }
@@ -226,7 +226,7 @@ namespace Icims.BusinessLayer
         }
         else
         {
-          IBusinessOutcome.StatusCode = StatusCode.Error;
+          IBusinessOutcome.StatusCode = StatusCode.error;
           IBusinessOutcome.Message = $"Unable to convert the patient date of birth to a valid date. The valid found was: {PID.Field(7).AsString}";
           return false;
         }
@@ -250,7 +250,7 @@ namespace Icims.BusinessLayer
             DomainModel.Patient.Gender = Gender.Unknown;
             break;
           default:
-            IBusinessOutcome.StatusCode = StatusCode.Error;
+            IBusinessOutcome.StatusCode = StatusCode.error;
             IBusinessOutcome.Message = $"Unknown patient gender code. Code found was : {PID.Field(8).AsString}";
             return false;
         }

@@ -31,10 +31,8 @@ namespace Icims.Api
 
       services.AddScoped<BusinessLayer.IBusinessEngine, Icims.BusinessLayer.BusinessEngine>();
       services.AddScoped<IBusinessEngineInput, BusinessEngineInput>();
-      services.AddScoped<IBusinessEngineOutcome, BusinessEngineOutcome>();
-      services.AddScoped<IMirthResponse, MirthResponse>();      
+      services.AddTransient<IBusinessEngineOutcome, BusinessEngineOutcome>();        
       services.AddScoped<IIcimsInterfaceModelMapper, IcimsInterfaceModelMapper>();
-
       
       services.Configure<Common.Models.AppSettings.IcimsSiteContext>(Configuration.GetSection("IcimsSiteContext"));
      

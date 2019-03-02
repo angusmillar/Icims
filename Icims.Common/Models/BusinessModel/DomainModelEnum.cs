@@ -6,11 +6,11 @@ namespace Icims.Common.Models.BusinessModel
   public enum StatusCode
   {
     [EnumLiteral("ok")]
-    Ok,
+    ok,
     [EnumLiteral("error")]
-    Error,
+    error,
     [EnumLiteral("queue")]
-    Queue
+    queue
   };
 
   public enum PostActionType

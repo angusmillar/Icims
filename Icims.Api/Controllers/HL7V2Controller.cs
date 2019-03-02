@@ -20,19 +20,19 @@ namespace Icims.Api.Controllers
     private IBusinessEngine IBusinessEngine;
     private IBusinessEngineInput IBusinessEngineInput;
     private readonly IOptions<IcimsSiteContext> IcimsSiteContext;
-    private readonly IMirthResponse IMirthResponse;
+    private readonly IBusinessEngineOutcome IBusinessOutcomeError;
     private readonly ILogger<HL7V2Controller> ILogger;
 
     public HL7V2Controller(IBusinessEngine IBusinessEngine, 
       IBusinessEngineInput IBusinessEngineInput, 
-      IOptions<IcimsSiteContext> IcimsSiteContext, 
-      IMirthResponse IMirthResponse,
+      IOptions<IcimsSiteContext> IcimsSiteContext,
+      IBusinessEngineOutcome IBusinessOutcomeError,
       ILogger<HL7V2Controller> ILogger)
     {      
       this.IBusinessEngine = IBusinessEngine;
       this.IBusinessEngineInput = IBusinessEngineInput;
       this.IcimsSiteContext = IcimsSiteContext;
-      this.IMirthResponse = IMirthResponse;
+      this.IBusinessOutcomeError = IBusinessOutcomeError;
       this.ILogger = ILogger;
     }
 
@@ -45,7 +45,7 @@ namespace Icims.Api.Controllers
     
     // POST api/values
     [HttpPost]
-    public ActionResult<IMirthResponse> Post(MirthMessage MirthMessage)
+    public ActionResult<IBusinessEngineOutcome> Post(MirthMessage MirthMessage)
     {
       //ILogger.LogTrace("Angus Did it work! Trace YES");
       //ILogger.LogDebug("Angus Did it work! Debug YES");
@@ -53,33 +53,30 @@ namespace Icims.Api.Controllers
       //ILogger.LogCritical("Angus Did it work! Critical YES");
       //ILogger.LogInformation("Angus Did it work! Info YES");      
       //ILogger.LogWarning("Angus Did it work! Warning YES");
-
+      IBusinessEngineOutcome IBusinessOutcome = null;
       try
       {
         IBusinessEngineInput.HL7V2Message = MirthMessage.HL7V2Message;
-        IBusinessEngineOutcome IBusinessOutcome = IBusinessEngine.Process(IBusinessEngineInput);
-        IMirthResponse.StatusCode = IBusinessOutcome.StatusCode.GetLiteral();
-        IMirthResponse.Message = IBusinessOutcome.Message;
-        IMirthResponse.IcimsResponse = IBusinessOutcome.IcimsResponse;
+        IBusinessOutcome = IBusinessEngine.Process(IBusinessEngineInput);       
         switch (IBusinessOutcome.StatusCode)
         {
-          case Common.Models.BusinessModel.StatusCode.Ok:
-            return Ok(IMirthResponse);
-          case Common.Models.BusinessModel.StatusCode.Queue:
-            return BadRequest(IMirthResponse);
-          case Common.Models.BusinessModel.StatusCode.Error:
-            return BadRequest(IMirthResponse);          
+          case Common.Models.BusinessModel.StatusCode.ok:
+            return Ok(IBusinessOutcome);
+          case Common.Models.BusinessModel.StatusCode.queue:
+            return BadRequest(IBusinessOutcome);
+          case Common.Models.BusinessModel.StatusCode.error:
+            return BadRequest(IBusinessOutcome);          
           default:
             throw new System.ComponentModel.InvalidEnumArgumentException(IBusinessOutcome.StatusCode.GetLiteral(), (int)IBusinessOutcome.StatusCode, typeof(Common.Models.BusinessModel.StatusCode));
         }               
       }
       catch(Exception Exec)
       {
-        IMirthResponse.StatusCode = Common.Models.BusinessModel.StatusCode.Error.GetLiteral();
-        IMirthResponse.Message = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
-        IMirthResponse.IcimsResponse = null;
+        IBusinessOutcomeError.StatusCode = Common.Models.BusinessModel.StatusCode.error;
+        IBusinessOutcomeError.Message = $"{IcimsSiteContext.Value.NameOfThisService}: Uncaught Exception: {Exec.Message}";
+        IBusinessOutcomeError.IcimsResponse = null;
         ILogger.LogCritical(Exec, $"HL7 Msg: {MirthMessage.HL7V2Message}, Uncaught Exception: { Exec.Message}");
-        return BadRequest(IMirthResponse);
+        return BadRequest(IBusinessOutcomeError);
       }      
     }
 
