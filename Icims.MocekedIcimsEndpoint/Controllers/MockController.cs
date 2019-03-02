@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Icims.Common.Models.IcimsInterface;
+using Icims.Common.Models.BusinessModel;
+using Icims.Common.Tools;
 
 namespace Icims.MocekedIcimsEndpoint.Controllers
 {
@@ -12,6 +14,8 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
   [ApiController]
   public class MockController : ControllerBase
   {
+    private readonly string Update = PostActionType.Update.GetLiteral();
+
     // GET api/values
     [HttpGet]
     public ActionResult<string> Get()
@@ -21,7 +25,8 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
     
     [HttpPost]
     [Consumes("application/x-www-form-urlencoded")]
-    [Route("add")]
+    //Below must be the same as the enum Icims.Common.Tools.PostActionType.add.GetLiteral();
+    [Route("addpatient")]
     public IActionResult PostAdd([FromForm]Add Data)
     {
       //As per the HL7 V2 Message Resource named 'RMH_ADT_A04.hl7' 
@@ -75,7 +80,8 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
 
     [HttpPost]
     [Consumes("application/x-www-form-urlencoded")]
-    [Route("update")]
+    //Below must be the same as the enum Icims.Common.Tools.PostActionType.update.GetLiteral();
+    [Route("updatepatient")]
     public IActionResult PostUpdate([FromForm]Update Data)
     {
       //As per the HL7 V2 Message Resource named 'RMH_ADT_A08.hl7' 
@@ -122,7 +128,8 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
     
     [HttpPost]
     [Consumes("application/x-www-form-urlencoded")]
-    [Route("merge")]
+    //Below must be the same as the enum Icims.Common.Tools.PostActionType.merge.GetLiteral();
+    [Route("mergepatient")]
     public IActionResult PostMerge([FromForm]Merge Data)
     {
       //As per the HL7 V2 Message Resource named 'RMH_ADT_A40.hl7' 

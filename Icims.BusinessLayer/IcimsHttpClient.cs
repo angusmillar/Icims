@@ -8,6 +8,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Icims.Common.Models.BusinessModel;
 
 namespace Icims.BusinessLayer
 {
@@ -15,16 +16,7 @@ namespace Icims.BusinessLayer
   {
     private readonly HttpClient HttpClient;
     private readonly IOptions<IcimsSiteContext> IcimsSiteContext;
-    private enum SendActionType
-    {
-      [EnumLiteral("add")]
-      Add,
-      [EnumLiteral("update")]
-      Update,
-      [EnumLiteral("merge")]
-      Merge
-    }
-
+    
     public IcimsHttpClient(IOptions<IcimsSiteContext> IcimsSiteContext, HttpClient client)
     {
       HttpClient = client;
@@ -45,20 +37,20 @@ namespace Icims.BusinessLayer
 
     public async Task<IIcimsHttpClientOutcome> PostAddAsync(IDictionary<string, string> Data)
     {
-      return await PostAsync(SendActionType.Add, Data);
+      return await PostAsync(PostActionType.Add, Data);
     }
 
     public async Task<IIcimsHttpClientOutcome> PostUpdateAsync(IDictionary<string, string> Data)
     {      
-      return await PostAsync(SendActionType.Update, Data);
+      return await PostAsync(PostActionType.Update, Data);
     }
 
     public async Task<IIcimsHttpClientOutcome> PostMergeAsync(IDictionary<string, string> Data)
     {
-      return await PostAsync(SendActionType.Merge, Data);
+      return await PostAsync(PostActionType.Merge, Data);
     }
 
-    private async Task<IIcimsHttpClientOutcome> PostAsync(SendActionType ActionType, IDictionary<string, string> Data)
+    private async Task<IIcimsHttpClientOutcome> PostAsync(PostActionType ActionType, IDictionary<string, string> Data)
     {
       var Outcome = new IcimsHttpClientOutcome();      
       var EncodedData = new FormUrlEncodedContent(Data);
