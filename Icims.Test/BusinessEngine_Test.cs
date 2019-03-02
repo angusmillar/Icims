@@ -64,8 +64,11 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.ok, "Process did not return Success = True");
+      Assert.IsTrue(Result.HasIcimsResponse, "HasIcimsResponse did not match expected");
+      Assert.AreEqual("Icims Response Received", Result.Message, "Message did not match expected");
+      Assert.AreEqual("No Error", Result.IcimsResponse.error, "error Message did not match expected");
+      Assert.AreEqual("Ok", Result.IcimsResponse.state, "state did not match expected");
     }
     
     [TestMethod]
@@ -82,8 +85,11 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.ok, "Process did not return Success = True");
+      Assert.IsTrue(Result.HasIcimsResponse, "HasIcimsResponse did not match expected");
+      Assert.AreEqual("Icims Response Received", Result.Message, "Message did not match expected");
+      Assert.AreEqual("No Error", Result.IcimsResponse.error, "error Message did not match expected");
+      Assert.AreEqual("Ok", Result.IcimsResponse.state, "state did not match expected");
     }
 
     [TestMethod]
@@ -100,8 +106,11 @@ namespace Icims.Test
       var Result = BusinessEngine.Process(EngineInputMok.Object);
 
       //Assert
-      Assert.AreEqual(Result.StatusCode, StatusCode.Ok, "Process did not return Success = True");
-      Assert.AreEqual("state: Ok, error: No Error", Result.Message, "Error Message did not match expected");
+      Assert.AreEqual(Result.StatusCode, StatusCode.ok, "Process did not return Success = True");
+      Assert.IsTrue(Result.HasIcimsResponse, "HasIcimsResponse did not match expected");
+      Assert.AreEqual("Icims Response Received", Result.Message, "Message did not match expected");
+      Assert.AreEqual("No Error", Result.IcimsResponse.error, "error Message did not match expected");
+      Assert.AreEqual("Ok", Result.IcimsResponse.state, "state did not match expected");
     }
 
 

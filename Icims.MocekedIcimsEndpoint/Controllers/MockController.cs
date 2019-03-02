@@ -46,13 +46,13 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
         if (!TestValue("fname", Data.fname, "TestGivenOne", out Response)) return BadRequest(Response);
         if (!TestValue("surname", Data.surname, "TestSurnameOne", out Response)) return BadRequest(Response);
         if (!TestValue("sex", Data.sex, "M", out Response)) return BadRequest(Response);
-        if (!TestValue("dob", Data.dob, "1950-01-01", out Response)) return BadRequest(Response);
+        if (!TestValue("dob", Data.dob, "1950-01-01T00:00:00", out Response)) return BadRequest(Response);
 
         if (!TestValue("mobile", Data.mobile, null, out Response)) return BadRequest(Response);
         if (!TestValue("phone", Data.phone, "0412345678", out Response)) return BadRequest(Response);
 
-        if (!TestValue("language", Data.language, "8714^Pitjantjatjara^SPOKL", out Response)) return BadRequest(Response);
-        if (!TestValue("marital_status", Data.marital_status, "2^Widowed^MARRY", out Response)) return BadRequest(Response);
+        if (!TestValue("language", Data.language, "8714", out Response)) return BadRequest(Response);
+        if (!TestValue("marital_status", Data.marital_status, "2", out Response)) return BadRequest(Response);
         if (!TestValue("aboriginality", Data.aboriginality, "4", out Response)) return BadRequest(Response);
 
         if (!TestValue("addr_line_1", Data.addr_line_1, "10 Test St", out Response)) return BadRequest(Response);
@@ -146,10 +146,10 @@ namespace Icims.MocekedIcimsEndpoint.Controllers
         if (!TestValue("addr_line_1", Data.addr_line_1, "160/100 Broadway", out Response)) return BadRequest(Response);
         if (!TestValue("addr_line_2", Data.addr_line_2, null, out Response)) return BadRequest(Response);
         if (!TestValue("assigning_authority", Data.assigning_authority, "RMH", out Response)) return BadRequest(Response);
-        if (!TestValue("dob", Data.dob, "1941-11-29", out Response)) return BadRequest(Response);
+        if (!TestValue("dob", Data.dob, "1941-11-29T00:00:00", out Response)) return BadRequest(Response);
         if (!TestValue("fname", Data.fname, "Giuseppe", out Response)) return BadRequest(Response);
-        if (!TestValue("language", Data.language, "2401^Italian^SPOKL", out Response)) return BadRequest(Response);
-        if (!TestValue("marital_status", Data.marital_status, "4^Separated^MARRY", out Response)) return BadRequest(Response);
+        if (!TestValue("language", Data.language, "2401", out Response)) return BadRequest(Response);
+        if (!TestValue("marital_status", Data.marital_status, "4", out Response)) return BadRequest(Response);
         if (!TestValue("mobile", Data.mobile, null, out Response)) return BadRequest(Response);
         if (!TestValue("msgid", Data.msgid, "344318446", out Response)) return BadRequest(Response);
         if (!TestValue("msg_datetime", Data.msg_datetime, "2013-11-28T14:58:11", out Response)) return BadRequest(Response);
