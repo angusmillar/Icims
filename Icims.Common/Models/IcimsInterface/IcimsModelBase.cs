@@ -27,8 +27,11 @@ namespace Icims.Common.Models.IcimsInterface
     public string ur_num { get; set; }
 
     /** @property {string} assigning_authority - institution id */
-    public string assigning_authority { get; set; }   
+    public string assigning_authority { get; set; }
 
+    /** @property {string} MedicareNumberValue - patient's Medicare number 10 or 11 digits */
+    public string MedicareNumberValue { get; set; }
+    
     /** @property {string} fname - patient first name */
     public string fname { get; set; }
 
@@ -81,6 +84,7 @@ namespace Icims.Common.Models.IcimsInterface
       CustomEncode("msg_datetime", this.msg_datetime);
       CustomEncode("ur_num", this.ur_num);
       CustomEncode("assigning_authority", this.assigning_authority);
+      CustomEncode("MedicareNumberValue", this.MedicareNumberValue);
       CustomEncode("fname", this.fname);
       CustomEncode("surname", this.surname);
       CustomEncode("dob", this.dob);
