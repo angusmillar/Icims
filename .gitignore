@@ -10,7 +10,7 @@ Icims.FhirIgPublisher/qa
 Icims.FhirIgPublisher/temp
 Icims.FhirIgPublisher/txCache/
 # .jar to exclude the 'org.hl7.fhir.igpublisher.jar' regardless of it's version
-Icims.FhirIgPublisher/*.jar
+#Icims.FhirIgPublisher/*.jar
 Icims.FhirIgPublisher/fhir-all-xsd/
 Icims.FhirIgPublisher/resources
 Icims.FhirIgPublisher/resources/resources/
