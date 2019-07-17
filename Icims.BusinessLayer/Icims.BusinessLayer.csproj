@@ -9,16 +9,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="PeterPiper" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Icims.Common\Icims.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="PeterPiper">
-      <HintPath>..\..\PeterPiper\PeterPiper\bin\Release\PeterPiper.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

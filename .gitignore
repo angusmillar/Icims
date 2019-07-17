@@ -3,6 +3,27 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# ==============================================
+# Ignore the FHIR Publisher temp output
+Icims.FhirIgPublisher/output
+Icims.FhirIgPublisher/qa
+Icims.FhirIgPublisher/temp
+Icims.FhirIgPublisher/txCache/
+# .jar to exclude the 'org.hl7.fhir.igpublisher.jar' regardless of it's version
+Icims.FhirIgPublisher/*.jar
+Icims.FhirIgPublisher/fhir-all-xsd/
+Icims.FhirIgPublisher/resources
+Icims.FhirIgPublisher/resources/resources/
+Icims.FhirIgPublisher/resources/au-fhir-base/
+Icims.FhirIgPublisher/private/
+Icims.FhirIgPublisher/resources/au-fhir-base
+Icims.FhirIgPublisher/content/pd-sequence-01.ldb
+Icims.FhirIgPublisher/resources/ig-validation-parameters.json
+Icims.FhirIgPublisher/resources/ig-expansion-parameters.json
+Icims.FhirIgPublisher/resources/ig-new.xml
+Icims.FhirIgPublisher/resources/ig-new.json
+# ==============================================
+
 # User-specific files
 *.rsuser
 *.suo

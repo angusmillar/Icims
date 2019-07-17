@@ -1,0 +1,101 @@
+{
+  "sct-edition": "http://snomed.info/sct/32506021000036107",
+  "version": "3.0.1",
+  "source": "ig.xml",
+  "dependencyList": [
+    {
+      "name": "aubase",
+      "location": "http://hl7.org.au/fhir/base",
+      "version": "current-stu3"
+    }
+  ],
+  "spreadsheets": [],
+  "special-urls": [
+    "https://healthterminologies.gov.au/fhir/CodeSystem/australian-states-territories-1"
+  ],
+  "extraTemplates": [
+    "mappings"
+  ],
+  "defaults": {
+    "ConceptMap": {
+      "template-base": "cm.html"
+    },
+    "Any": {
+      "template-base": "base.html",
+      "template-format": "format.html"
+    },
+    "StructureDefinition": {
+      "template-base": "sd.html",
+      "template-defns": "sd-definitions.html",
+      "template-mappings": "sd-mappings.html"
+    },
+    "ValueSet": {
+      "template-base": "vs.html"
+    },
+    "CodeSystem": {
+      "template-base": "cs.html"
+    },
+    "Patient": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Practitioner": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "PractitionerRole": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Organization": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Location": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Address": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Endpoint": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    },
+    "Bundle": {
+      "template-base": "ex.html",
+      "template-format": "ex-format.html"
+    }
+  },
+  "tool": "jekyll",
+  "license": "CC0-1.0",
+  "canonicalBase": "https://www.icims.com.au/fhir",
+  "paths": {
+    "temp": "temp",
+    "resources": [
+      "resources",
+      "examples"
+    ],
+    "pages": "pages",
+    "txCache": "txCache",
+    "output": "output",
+    "qa": "qa",
+    "specification": "http://hl7.org/fhir/STU3"
+  },
+  "npm-name": "icims.fhir",
+  "resources": {
+    "StructureDefinition/icims-patient": {
+      "base": "StructureDefinition-icims-patient.html",
+      "defns": "StructureDefinition-icims-patient-definitions.html"
+    },
+    "StructureDefinition/icims-organisation": {
+      "base": "StructureDefinition-icims-organisation.html",
+      "defns": "StructureDefinition-icims-organisation-definitions.html"
+    },
+    "StructureDefinition/icims-observation": {
+      "base": "StructureDefinition-icims-observation.html",
+      "defns": "StructureDefinition-icims-observation-definitions.html"
+    }
+  }
+}

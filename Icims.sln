@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Icims.Api", "Icims.Api\Icims.Api.csproj", "{0F6157C7-1230-4A5D-AE57-AF4A84EB5AA7}"
 EndProject
@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Icims.Common", "Icims.Commo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Icims.Test", "Icims.Test\Icims.Test.csproj", "{5779391C-E1B4-4AEA-B61E-7C1CDE99D864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icims.MocekedIcimsEndpoint", "Icims.MocekedIcimsEndpoint\Icims.MocekedIcimsEndpoint.csproj", "{55DE186F-19D9-4117-BE50-2E4D57D91658}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Icims.MocekedIcimsEndpoint", "Icims.MocekedIcimsEndpoint\Icims.MocekedIcimsEndpoint.csproj", "{55DE186F-19D9-4117-BE50-2E4D57D91658}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Icims.Profile", "Icims.Profile\Icims.Profile.csproj", "{EBF66681-25CA-445F-B618-482B643C74BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Icims.ProfileGenerator", "Icims.ProfileGenerator\Icims.ProfileGenerator.csproj", "{65D4BFC3-2DE7-421C-AA2D-A892567B9B4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{55DE186F-19D9-4117-BE50-2E4D57D91658}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55DE186F-19D9-4117-BE50-2E4D57D91658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55DE186F-19D9-4117-BE50-2E4D57D91658}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBF66681-25CA-445F-B618-482B643C74BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBF66681-25CA-445F-B618-482B643C74BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBF66681-25CA-445F-B618-482B643C74BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBF66681-25CA-445F-B618-482B643C74BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65D4BFC3-2DE7-421C-AA2D-A892567B9B4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D4BFC3-2DE7-421C-AA2D-A892567B9B4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D4BFC3-2DE7-421C-AA2D-A892567B9B4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D4BFC3-2DE7-421C-AA2D-A892567B9B4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
