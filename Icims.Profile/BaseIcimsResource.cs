@@ -18,5 +18,6 @@ namespace Icims.Profile
     protected string ResourceName { get; private set; }
     protected ResourceType ResourceType { get; private set; }
     public abstract Resource GetResource();
+    public abstract T GetResource<T>() where T : Resource;
   }
 }

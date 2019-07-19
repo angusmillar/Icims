@@ -1,19 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Icims.Profile.Annotation;
 using Icims.Common.Models.Icims;
 using Icims.Common.Models.Pyrohealth;
 
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Utility;
 
-namespace Icims.Profile
+namespace Icims.Profile.CapabilityStatementGen
 {
   public class IcimsCapabilityStatement : BaseIcimsResource
   {
-    public IcimsCapabilityStatement():
+    public IcimsCapabilityStatement() :
       base(ResourceType.CapabilityStatement)
     { }
+
+    public override CapabilityStatement GetResource<CapabilityStatement>()
+    {
+      return GetResource() as CapabilityStatement;
+    }
 
     public override Resource GetResource()
     {
@@ -21,7 +27,7 @@ namespace Icims.Profile
       Cap.Id = $"{IcimsInfo.IcimsCode}-capability";
 
       Cap.AddAnnotation(new IcimsResourceAnnotation(this.ResourceType, Cap.Id));
-      
+
       Cap.Url = $"{IcimsInfo.IcimsProfileUrlBase}/CapabilityStatement/{Cap.Id}";
       Cap.Version = "1.0.0";
       Cap.Name = $"{Icims.Common.Tools.StringSupport.FirstCharToUpper(IcimsInfo.IcimsCode)} {this.ResourceName}";

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Icims.Profile.Annotation;
 using Icims.Common.Models.Icims;
 using Icims.Common.Models.Pyrohealth;
 using Icims.Common.Tools;
 using Hl7.Fhir.Model;
 
 
-namespace Icims.Profile
+namespace Icims.Profile.ImplementationGuideGen
 {
   public class IcimsImplementationGuide : BaseIcimsResource
   {
@@ -16,6 +17,11 @@ namespace Icims.Profile
       base(ResourceType.ImplementationGuide)
     {
       this.ResourceComponentList = ResourceComponentList;
+    }
+
+    public override ImplementationGuide GetResource<ImplementationGuide>()
+    {
+      return GetResource() as ImplementationGuide;
     }
 
     public override Resource GetResource()

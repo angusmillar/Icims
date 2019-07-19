@@ -5,23 +5,27 @@ using Hl7.Fhir.Model;
 using Hl7.Fhir.Utility;
 using Icims.Common.Models.Icims;
 using Icims.Common.Models.Pyrohealth;
+using Icims.Profile;
 
-
-namespace Icims.Profile
+namespace Icims.Profile.StructureDefinitionGen
 {
   public abstract class BaseStructureDefinitionProfile : BaseIcimsResource
-  {    
+  {
     protected StructureDefinition Def;
 
+    public override StructureDefinition GetResource<StructureDefinition>()
+    {
+      return GetResource() as StructureDefinition;
+    }
     public BaseStructureDefinitionProfile(ResourceType ResourceType) :
       base(ResourceType)
-    { 
+    {
       if (!ModelInfo.IsKnownResource(ResourceType.GetLiteral()))
       {
         throw new ApplicationException($"The provided ResourceType of {ResourceType.GetLiteral()} was not a KnownResource");
       }
 
-      Def = new StructureDefinition();      
+      Def = new StructureDefinition();
 
       Def.Id = $"{IcimsInfo.IcimsCode}-{ResourceName.ToLower()}";
       Def.Text = new Narrative()
@@ -64,7 +68,7 @@ namespace Icims.Profile
 
 
 
-    }   
+    }
 
   }
 }

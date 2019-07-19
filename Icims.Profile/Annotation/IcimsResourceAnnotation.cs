@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Hl7.Fhir.Model;
 
-namespace Icims.Profile
+namespace Icims.Profile.Annotation
 {
   public class IcimsResourceAnnotation
   {
@@ -14,7 +14,7 @@ namespace Icims.Profile
       this.IsExample = IsExample;
     }
     public ResourceType ResourceType { get; set; }
-    public string Filename { get; set; }    
+    public string Filename { get; set; }
     public bool IsExample { get; set; }
   }
 }

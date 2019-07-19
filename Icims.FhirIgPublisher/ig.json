@@ -85,6 +85,10 @@
   },
   "npm-name": "icims.fhir",
   "resources": {
+    "CapabilityStatement/icims-capability": {
+      "base": "CapabilityStatement-icims-capability.html",
+      "defns": "CapabilityStatement-icims-capability-definitions.html"
+    },
     "StructureDefinition/icims-patient": {
       "base": "StructureDefinition-icims-patient.html",
       "defns": "StructureDefinition-icims-patient-definitions.html"
@@ -92,6 +96,10 @@
     "StructureDefinition/icims-organisation": {
       "base": "StructureDefinition-icims-organisation.html",
       "defns": "StructureDefinition-icims-organisation-definitions.html"
+    },
+    "StructureDefinition/icims-diagnosticreport": {
+      "base": "StructureDefinition-icims-diagnosticreport.html",
+      "defns": "StructureDefinition-icims-diagnosticreport-definitions.html"
     },
     "StructureDefinition/icims-observation": {
       "base": "StructureDefinition-icims-observation.html",
