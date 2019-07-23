@@ -6,6 +6,7 @@ using Hl7.Fhir.Utility;
 using Icims.Common.Models.Icims;
 using Icims.Common.Models.Pyrohealth;
 using Icims.Profile;
+using Icims.Profile.Annotation;
 
 namespace Icims.Profile.StructureDefinitionGen
 {
@@ -20,14 +21,10 @@ namespace Icims.Profile.StructureDefinitionGen
     public BaseStructureDefinitionProfile(ResourceType ResourceType) :
       base(ResourceType)
     {
-      if (!ModelInfo.IsKnownResource(ResourceType.GetLiteral()))
-      {
-        throw new ApplicationException($"The provided ResourceType of {ResourceType.GetLiteral()} was not a KnownResource");
-      }
-
       Def = new StructureDefinition();
-
-      Def.Id = $"{IcimsInfo.IcimsCode}-{ResourceName.ToLower()}";
+      Def.Id = $"{IcimsInfo.IcimsCode}-{ResourceName.ToLower()}-def";
+      //Def.Id = $"{ResourceType.StructureDefinition.GetLiteral().ToLower()}-{IcimsInfo.IcimsCode}-{ResourceName.ToLower()}";
+      Def.AddAnnotation(new IcimsResourceAnnotation(ResourceType.StructureDefinition, Def.Id));
       Def.Text = new Narrative()
       {
         Status = Narrative.NarrativeStatus.Generated,
@@ -55,7 +52,7 @@ namespace Icims.Profile.StructureDefinitionGen
            }
         }
       };
-      Def.Description = new Markdown($"### ICIMS Austrlian {ResourceName} Resource  &#xa;&#xa;#### This is a {ResourceName} resource profile to be used by ICIMS within Australia.");
+      Def.Description = new Markdown($"### ICIMS Austrlian {ResourceName} Resource  &#xa;&#xa; #### This is a {ResourceName} resource profile to be used by ICIMS within Australia.");
       Def.FhirVersion = "3.0.1";
       Def.Kind = StructureDefinition.StructureDefinitionKind.Resource;
       Def.Abstract = false;

@@ -18,18 +18,19 @@ namespace Icims.ProfileGenerator
     static void Main(string[] args)
     {
       string ResourceOutputDirectoryName = "resources";
-      DirectoryInfo TargetOutputDirectoryInfo = GetOutPutDirectory(ResourceOutputDirectoryName);
-      if (!TargetOutputDirectoryInfo.Exists)
+      DirectoryInfo BaseOutputDirectory = GetBaseOutputDirectory();
+      DirectoryInfo TargetResourceOutputDirectoryInfo = new DirectoryInfo(Path.Combine(BaseOutputDirectory.FullName, ResourceOutputDirectoryName));
+      if (!TargetResourceOutputDirectoryInfo.Exists)
       {
-        throw new ApplicationException($"The output directory does not exists: '{TargetOutputDirectoryInfo.FullName}'");
+        throw new ApplicationException($"The resource output directory does not exists: '{TargetResourceOutputDirectoryInfo.FullName}'");
       }
 
       //Delete all files in the directory
-      Console.WriteLine($"Output directory is : {TargetOutputDirectoryInfo.FullName}");
+      Console.WriteLine($"Output directory is : {TargetResourceOutputDirectoryInfo.FullName}");
       Console.WriteLine("Delete resource in output directory");
-      if (TargetOutputDirectoryInfo.GetFiles().Length == 0)
+      if (TargetResourceOutputDirectoryInfo.GetFiles().Length == 0)
         Console.WriteLine("No resource in output directory to delete");
-      foreach (FileInfo file in TargetOutputDirectoryInfo.GetFiles())
+      foreach (FileInfo file in TargetResourceOutputDirectoryInfo.GetFiles())
       {
         Console.WriteLine($"Delete {file.Name}");
         file.Delete();
@@ -38,7 +39,8 @@ namespace Icims.ProfileGenerator
       Console.WriteLine("Generate resources");
       List<Resource> ResourceList = CapabilityStatementFactory.GetAllResources();
       ResourceList.AddRange(StructureDefinitionFactory.GetAllResources());
-      ResourceList.AddRange(ExampleFactory.GetAllResources());
+      var ExampleResourceList = ExampleFactory.GetAllResources();
+      ResourceList.AddRange(ExampleResourceList);
       ResourceList.Add(ImplementationGuideFactory.GetIcimsImplementationGuide(ResourceList));
 
       foreach (Resource Res in ResourceList)
@@ -49,14 +51,20 @@ namespace Icims.ProfileGenerator
           Console.WriteLine($"Resource: {IcimsAnnotation.Filename}.xml");
           FhirXmlSerializer FhirXmlSerializer = new FhirXmlSerializer();
           FhirXmlSerializer.Settings.Pretty = true;
-          File.WriteAllText(Path.Combine(TargetOutputDirectoryInfo.FullName, IcimsAnnotation.Filename + ".xml"), FhirXmlSerializer.SerializeToString(Res));
+          File.WriteAllText(Path.Combine(TargetResourceOutputDirectoryInfo.FullName, IcimsAnnotation.Filename + ".xml"), FhirXmlSerializer.SerializeToString(Res));
         }
-
       }
+
+      var ExampleMarkDownList = ExampleMarkdownGenerator.GetAllMarkdownFiles(ExampleResourceList);
+      foreach (var MarkDownFile in ExampleMarkDownList)
+      {
+        File.WriteAllText(Path.Combine(BaseOutputDirectory.FullName, MarkDownFile.RelativeFilePath), MarkDownFile.FileContent);
+      }
+
       Console.WriteLine($"Total of {ResourceList.Count} resources output");
     }
 
-    private static DirectoryInfo GetOutPutDirectory(string OutputDirectoryName)
+    private static DirectoryInfo GetBaseOutputDirectory()
     {
       var test = System.IO.Directory.GetCurrentDirectory();
       // Console.WriteLine($"#####################################################################");
@@ -73,7 +81,7 @@ namespace Icims.ProfileGenerator
         }
         if (CurrentDirectory.Name == "Icims.ProfileGenerator")
         {
-          TargetOutputDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(CurrentDirectory.Parent.FullName, $@"Icims.FhirIgPublisher\{OutputDirectoryName}"));
+          TargetOutputDirectoryInfo = new DirectoryInfo(System.IO.Path.Combine(CurrentDirectory.Parent.FullName, $@"Icims.FhirIgPublisher"));
           found = true;
         }
         else

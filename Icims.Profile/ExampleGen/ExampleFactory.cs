@@ -12,15 +12,32 @@ namespace Icims.Profile.ExampleGen
     {
       List<Resource> Result = new List<Resource>();
       Result.Add(GetPatient());
+      Result.Add(GetOrganizationIcims());
+      Result.Add(GetOrganizationSah());
+      Result.Add(GetObservation());
       return Result;
-
     }
-
     public static Patient GetPatient()
     {
       var example = new PatientExample();
       return example.GetResource<Patient>();
     }
+    public static Organization GetOrganizationIcims()
+    {
+      var example = new OrganizationExampleIcims();
+      return example.GetResource<Organization>();
+    }
+    public static Organization GetOrganizationSah()
+    {
+      var example = new OrganizationExampleSah();
+      return example.GetResource<Organization>();
+    }
+    public static Observation GetObservation()
+    {
+      var example = new ObservationExampleString();
+      return example.GetResource<Observation>();
+    }
+
 
   }
 }

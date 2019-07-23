@@ -4,13 +4,14 @@ using System.Text;
 using Icims.Profile.Annotation;
 using Icims.Common.Models.Icims;
 using Icims.Common.Models.Pyrohealth;
-using Icims.Common.Tools;
+using Hl7.Fhir.Utility;
 using Hl7.Fhir.Model;
 
 namespace Icims.Profile.ExampleGen
 {
   public class PatientExample : ExampleBase
   {
+    public PatientExample() : base(ResourceType.Patient) { }
     public override Patient GetResource<Patient>()
     {
       return GetResource() as Patient;
@@ -18,8 +19,17 @@ namespace Icims.Profile.ExampleGen
     public override Resource GetResource()
     {
       var Pat = new Patient();
-      Pat.AddAnnotation(new IcimsResourceAnnotation(ResourceType.Patient, "icims-patient-example", true));
-      Pat.Id = Guid.NewGuid().ToString();
+      Pat.Id = $"{IcimsInfo.IcimsCode}-{ResourceName.ToLower()}-example-1";
+
+      Pat.AddAnnotation(new IcimsResourceAnnotation(ResourceType.Patient, Pat.Id, true));
+
+      var ExampleAnnotation = new ExampleResourceAnnotation();
+      ExampleAnnotation.ExampleName = "Example-1";
+      ExampleAnnotation.Filename = Pat.Id;
+      ExampleAnnotation.ResourceType = this.ResourceType;
+      ExampleAnnotation.Description = "Simple Patient example from Angus";
+      Pat.AddAnnotation(ExampleAnnotation);
+
       Pat.Meta = new Meta();
       Pat.Meta.Profile = new List<string>(){
           "http://hl7.org.au/fhir/StructureDefinition/au-patient",

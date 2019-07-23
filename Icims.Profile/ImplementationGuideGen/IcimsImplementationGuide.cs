@@ -27,10 +27,8 @@ namespace Icims.Profile.ImplementationGuideGen
     public override Resource GetResource()
     {
       var Ig = new ImplementationGuide();
-
-      Ig.AddAnnotation(new IcimsResourceAnnotation(this.ResourceType, "Ig"));
-
-      Ig.Id = IcimsInfo.IcimsCode;
+      Ig.Id = $"{IcimsInfo.IcimsCode}-{this.ResourceName.ToLower()}";
+      Ig.AddAnnotation(new IcimsResourceAnnotation(this.ResourceType, Ig.Id));
       Ig.Url = $"{IcimsInfo.IcimsProfileUrlBase}/ImplementationGuide/{IcimsInfo.IcimsCode}";
       Ig.Version = "1.0.0";
       Ig.Name = $"{StringSupport.FirstCharToUpper(IcimsInfo.IcimsCode)} Implementation Guide";

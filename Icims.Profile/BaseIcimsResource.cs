@@ -11,6 +11,10 @@ namespace Icims.Profile
   {
     public BaseIcimsResource(ResourceType ResourceType)
     {
+      if (!ModelInfo.IsKnownResource(ResourceType.GetLiteral()))
+      {
+        throw new ApplicationException($"The provided ResourceType of {ResourceType.GetLiteral()} was not a KnownResource");
+      }
       this.ResourceType = ResourceType;
       this.ResourceName = ResourceType.GetLiteral();
     }

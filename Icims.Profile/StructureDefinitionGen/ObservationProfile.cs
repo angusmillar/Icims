@@ -18,8 +18,6 @@ namespace Icims.Profile.StructureDefinitionGen
 
     public override Resource GetResource()
     {
-      Def.AddAnnotation(new IcimsResourceAnnotation(this.ResourceType, Def.Id));
-
       Def.Version = "0.0.1";
       Def.Status = PublicationStatus.Draft;
       Def.DateElement = new FhirDateTime(new DateTimeOffset(2019, 07, 16, 09, 12, 00, new TimeSpan(10, 0, 0)));

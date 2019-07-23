@@ -25,9 +25,7 @@ namespace Icims.Profile.CapabilityStatementGen
     {
       var Cap = new CapabilityStatement();
       Cap.Id = $"{IcimsInfo.IcimsCode}-capability";
-
       Cap.AddAnnotation(new IcimsResourceAnnotation(this.ResourceType, Cap.Id));
-
       Cap.Url = $"{IcimsInfo.IcimsProfileUrlBase}/CapabilityStatement/{Cap.Id}";
       Cap.Version = "1.0.0";
       Cap.Name = $"{Icims.Common.Tools.StringSupport.FirstCharToUpper(IcimsInfo.IcimsCode)} {this.ResourceName}";

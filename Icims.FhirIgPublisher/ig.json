@@ -1,7 +1,7 @@
 {
   "sct-edition": "http://snomed.info/sct/32506021000036107",
   "version": "3.0.1",
-  "source": "ig.xml",
+  "source": "icims-implementationguide.xml",
   "dependencyList": [
     {
       "name": "aubase",
@@ -14,7 +14,8 @@
     "https://healthterminologies.gov.au/fhir/CodeSystem/australian-states-territories-1"
   ],
   "extraTemplates": [
-    "mappings"
+    "mappings",
+    "examples"
   ],
   "defaults": {
     "ConceptMap": {
@@ -27,7 +28,9 @@
     "StructureDefinition": {
       "template-base": "sd.html",
       "template-defns": "sd-definitions.html",
-      "template-mappings": "sd-mappings.html"
+      "template-mappings": "sd-mappings.html",
+      "template-format": "sd-format.html",
+      "template-examples": "sd-examples.html"
     },
     "ValueSet": {
       "template-base": "vs.html"
@@ -71,6 +74,12 @@
   "tool": "jekyll",
   "license": "CC0-1.0",
   "canonicalBase": "https://www.icims.com.au/fhir",
+  "logging": [
+    "init",
+    "context",
+    "html",
+    "tx"
+  ],
   "paths": {
     "temp": "temp",
     "resources": [

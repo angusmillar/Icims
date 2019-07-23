@@ -1,0 +1,37 @@
+---
+# jekyll header
+---
+
+
+{% include header.html %}
+
+{% include container-start.html %}
+
+<h2>StructureDefinition: {{[id]}}</h2>
+
+ <ul class="nav nav-tabs">
+	<li><a href="{{[type]}}-{{[id]}}.html">Content</a></li>
+	<li><a href="{{[type]}}-{{[id]}}.html">Detailed Descriptions</a></li>
+	<li class="active"><a href="#">Examples</a></li>
+	<li><a href="{{[type]}}-{{[id]}}.xml.html">XML</a></li>
+	<li><a href="{{[type]}}-{{[id]}}.json.html">JSON</a></li>
+	<li><a href="{{[type]}}-{{[id]}}.ttl.html">Turtle</a></li>
+</ul>
+
+
+<p></p>
+
+<div>
+
+
+</p>
+{% capture my-include %}{% include {{[id]}}-examples.md %}{% endcapture %}{{ my-include | markdownify }}
+
+<p>
+
+
+</div>
+
+{% include container-end.html %}
+
+{% include footer.html %}
