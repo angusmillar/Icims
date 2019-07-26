@@ -1,6 +1,6 @@
-#### Observation Resource example list
+#### Observation resource example list
 
 |Name|Description|
 |---|---||
-|<a href="Observation-icims-observation-example-string.html">Example-String</a>|Simple string datatype Observation example|
+|<a href="Observation-icims-observation-example-string.html">Example-String</a>|String datatype Observation example|
 {:.grid}

@@ -16,6 +16,8 @@ namespace Icims.Profile.StructureDefinitionGen
       Result.Add(GetOrganisationStructureDefinition());
       Result.Add(GetDiagnosticReportStructureDefinition());
       Result.Add(GetObservationStructureDefinition());
+      Result.Add(GetProvenanceStructureDefinition());
+      Result.Add(GetBundleStructureDefinition());
       return Result;
     }
 
@@ -46,6 +48,17 @@ namespace Icims.Profile.StructureDefinitionGen
       var Profile = new ObservationProfile();
       return Profile.GetResource() as StructureDefinition;
     }
+    public static StructureDefinition GetProvenanceStructureDefinition()
+    {
+      var Profile = new ProvenanceProfile();
+      return Profile.GetResource() as StructureDefinition;
+    }
+    public static StructureDefinition GetBundleStructureDefinition()
+    {
+      var Profile = new BundleProfile();
+      return Profile.GetResource() as StructureDefinition;
+    }
+
 
     // private static List<Resource> GetAllResourcesExceptIG()
     // {

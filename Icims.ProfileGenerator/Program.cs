@@ -41,7 +41,14 @@ namespace Icims.ProfileGenerator
       ResourceList.AddRange(StructureDefinitionFactory.GetAllResources());
       var ExampleResourceList = ExampleFactory.GetAllResources();
       ResourceList.AddRange(ExampleResourceList);
-      ResourceList.Add(ImplementationGuideFactory.GetIcimsImplementationGuide(ResourceList));
+      if (ResourceList.Contains(null))
+      {
+        throw new NullReferenceException("One of the resources returned null.");
+      }
+      else
+      {
+        ResourceList.Add(ImplementationGuideFactory.GetIcimsImplementationGuide(ResourceList));
+      }
 
       foreach (Resource Res in ResourceList)
       {

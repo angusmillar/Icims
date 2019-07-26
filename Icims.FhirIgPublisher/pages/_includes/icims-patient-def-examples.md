@@ -1,4 +1,4 @@
-#### Patient Resource example list
+#### Patient resource example list
 
 |Name|Description|
 |---|---||

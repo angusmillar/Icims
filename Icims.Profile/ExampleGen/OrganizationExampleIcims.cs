@@ -27,7 +27,7 @@ namespace Icims.Profile.ExampleGen
       ExampleAnnotation.ExampleName = "Example-ICIMS";
       ExampleAnnotation.Filename = Org.Id;
       ExampleAnnotation.ResourceType = this.ResourceType;
-      ExampleAnnotation.Description = "Simple Organisation example from Angus";
+      ExampleAnnotation.Description = $"ICIMS {ResourceName} example";
       Org.AddAnnotation(ExampleAnnotation);
 
       Org.Meta = new Meta();

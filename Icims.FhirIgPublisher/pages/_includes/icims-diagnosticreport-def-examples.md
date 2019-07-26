@@ -1,4 +1,6 @@
+#### DiagnosticReport resource example list
+
 |Name|Description|
 |---|---||
-|no example|no example|
+|<a href="DiagnosticReport-icims-diagnosticreport-example-1.html">Example-One</a>|DiagnosticReport example|
 {:.grid}

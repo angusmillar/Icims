@@ -15,6 +15,9 @@ namespace Icims.Profile.ExampleGen
       Result.Add(GetOrganizationIcims());
       Result.Add(GetOrganizationSah());
       Result.Add(GetObservation());
+      Result.Add(GetDiagnosticReportExample());
+      Result.Add(GetMessageBundleExample());
+      Result.Add(GetProvenanceExample());
       return Result;
     }
     public static Patient GetPatient()
@@ -36,6 +39,21 @@ namespace Icims.Profile.ExampleGen
     {
       var example = new ObservationExampleString();
       return example.GetResource<Observation>();
+    }
+    public static DiagnosticReport GetDiagnosticReportExample()
+    {
+      var example = new DiagnosticReportExample();
+      return example.GetResource<DiagnosticReport>();
+    }
+    public static Bundle GetMessageBundleExample()
+    {
+      var example = new BundleMessageExample();
+      return example.GetResource<Bundle>();
+    }
+    public static Provenance GetProvenanceExample()
+    {
+      var example = new ProvenanceExample();
+      return example.GetResource<Provenance>();
     }
 
 

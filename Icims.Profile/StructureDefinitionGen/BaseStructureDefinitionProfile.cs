@@ -52,7 +52,36 @@ namespace Icims.Profile.StructureDefinitionGen
            }
         }
       };
-      Def.Description = new Markdown($"### ICIMS Austrlian {ResourceName} Resource  &#xa;&#xa; #### This is a {ResourceName} resource profile to be used by ICIMS within Australia.");
+      StringBuilder Des = new StringBuilder();
+      Des.AppendLine($"# ICIMS Austrlian {ResourceName} resource profile.");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"## Heading 2");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"### Heading 3");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"no bold");
+      // Des.AppendLine($"");     
+      // Des.AppendLine($"");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"[Google](https://www.google.com)");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"**Some bold text** but this is not bold");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"*italicized text* but not over here");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"- First item");
+      // Des.AppendLine($"- Second item");
+      // Des.AppendLine($"- Third item");
+      // Des.AppendLine($"- Four item");
+      // Des.AppendLine($"");
+      // Des.AppendLine($"Below is a horizontal line");
+      // Des.AppendLine($"---");
+      // Des.AppendLine($"");
+
+
+
+      Def.Description = new Markdown(Des.ToString());
+
       Def.FhirVersion = "3.0.1";
       Def.Kind = StructureDefinition.StructureDefinitionKind.Resource;
       Def.Abstract = false;

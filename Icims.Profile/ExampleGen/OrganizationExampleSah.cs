@@ -27,7 +27,7 @@ namespace Icims.Profile.ExampleGen
       ExampleAnnotation.ExampleName = "Example-SAH";
       ExampleAnnotation.Filename = Org.Id;
       ExampleAnnotation.ResourceType = this.ResourceType;
-      ExampleAnnotation.Description = "Simple Organisation example from Angus";
+      ExampleAnnotation.Description = $"Sydney Adventist Hospital {ResourceName} example";
       Org.AddAnnotation(ExampleAnnotation);
 
       Org.Meta = new Meta();

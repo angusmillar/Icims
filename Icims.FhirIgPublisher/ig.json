@@ -113,6 +113,14 @@
     "StructureDefinition/icims-observation": {
       "base": "StructureDefinition-icims-observation.html",
       "defns": "StructureDefinition-icims-observation-definitions.html"
+    },
+    "StructureDefinition/icims-bundle": {
+      "base": "StructureDefinition-icims-bundle.html",
+      "defns": "StructureDefinition-icims-bundle-definitions.html"
+    },
+    "StructureDefinition/icims-provenance": {
+      "base": "StructureDefinition-icims-provenance.html",
+      "defns": "StructureDefinition-icims-provenance-definitions.html"
     }
   }
 }

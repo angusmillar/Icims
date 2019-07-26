@@ -27,7 +27,7 @@ namespace Icims.Profile.ExampleGen
       ExampleAnnotation.ExampleName = "Example-String";
       ExampleAnnotation.Filename = Obs.Id;
       ExampleAnnotation.ResourceType = this.ResourceType;
-      ExampleAnnotation.Description = "Simple string datatype Observation example";
+      ExampleAnnotation.Description = $"String datatype {ResourceName} example";
       Obs.AddAnnotation(ExampleAnnotation);
 
       Obs.Meta = new Meta();
