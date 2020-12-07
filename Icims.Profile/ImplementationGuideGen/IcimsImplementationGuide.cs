@@ -51,7 +51,7 @@ namespace Icims.Profile.ImplementationGuideGen
            }
         }
       };
-      Ig.FhirVersion = "3.0.1";
+      Ig.FhirVersion = "3.0.2";
       Ig.Package = new List<ImplementationGuide.PackageComponent>();
       Ig.Package.Add(new ImplementationGuide.PackageComponent()
       {

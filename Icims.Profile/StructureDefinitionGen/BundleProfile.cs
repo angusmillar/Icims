@@ -64,6 +64,28 @@ namespace Icims.Profile.StructureDefinitionGen
         Path = $"{ResourceName}.entry",
       });
 
+
+
+      // Def.Differential.Element.Add(new ElementDefinition()
+      // {
+      //   ElementId = $"{ResourceName}.entry",
+      //   Path = $"{ResourceName}.entry",
+      //   Slicing = new ElementDefinition.SlicingComponent(){
+      //     Discriminator = new List<ElementDefinition.DiscriminatorComponent>(){
+      //       new ElementDefinition.DiscriminatorComponent(){
+      //         Type = ElementDefinition.DiscriminatorType.Pattern,
+      //         Path = "type"
+      //       },
+      //       new ElementDefinition.DiscriminatorComponent(){
+      //         Type = ElementDefinition.DiscriminatorType.Value,
+      //         Path = "resource"
+      //       }
+      //     },
+      //     Rules = ElementDefinition.SlicingRules.Open
+      //   }
+      // });
+
+
       Def.Differential.Element.Add(new ElementDefinition()
       {
         ElementId = $"{ResourceName}.entry.fullUrl",

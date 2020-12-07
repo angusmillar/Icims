@@ -32,6 +32,15 @@ namespace Icims.Profile.StructureDefinitionGen
 
       Def.Differential.Element.Add(new ElementDefinition()
       {
+        ElementId = $"{ResourceName}.id",
+        Path = $"{ResourceName}.id",
+        Max = "1",
+        Min = 1,
+        MustSupport = true
+      });
+
+      Def.Differential.Element.Add(new ElementDefinition()
+      {
         ElementId = $"{ResourceName}.implicitRules",
         Path = $"{ResourceName}.implicitRules",
         Max = "0"
@@ -67,12 +76,12 @@ namespace Icims.Profile.StructureDefinitionGen
         Max = "0"
       });
 
-      Def.Differential.Element.Add(new ElementDefinition()
-      {
-        ElementId = $"{ResourceName}.extension:indigenousStatus.valueCoding:valueCoding",
-        Path = $"{ResourceName}.extension.valueCoding",
-        SliceName = "indigenousStatus",
-      });
+      // Def.Differential.Element.Add(new ElementDefinition()
+      // {
+      //   ElementId = $"{ResourceName}.extension:indigenousStatus.valueCoding:valueCoding",
+      //   Path = $"{ResourceName}.extension.valueCoding",
+      //   SliceName = "indigenousStatus",
+      // });
 
       Def.Differential.Element.Add(new ElementDefinition()
       {
@@ -159,7 +168,8 @@ namespace Icims.Profile.StructureDefinitionGen
         Path = $"{ResourceName}.identifier",
         SliceName = "medicalRecordNumber",
         Min = 1,
-        Max = "1"
+        Max = "1",
+        MustSupport = true
       });
 
       Def.Differential.Element.Add(new ElementDefinition()
@@ -190,6 +200,15 @@ namespace Icims.Profile.StructureDefinitionGen
         ElementId = $"{ResourceName}.name.family",
         Path = $"{ResourceName}.name.family",
         Min = 1,
+        MustSupport = true
+      });
+
+      Def.Differential.Element.Add(new ElementDefinition()
+      {
+        ElementId = $"{ResourceName}.name.given",
+        Path = $"{ResourceName}.name.given",
+        Min = 0,
+        MustSupport = true
       });
 
       Def.Differential.Element.Add(new ElementDefinition()
@@ -223,21 +242,17 @@ namespace Icims.Profile.StructureDefinitionGen
       {
         ElementId = $"{ResourceName}.gender",
         Path = $"{ResourceName}.gender",
-        Min = 1
+        Min = 1,
+        MustSupport = true
       });
+
+      //    ### birthDate #######################################
 
       Def.Differential.Element.Add(new ElementDefinition()
       {
         ElementId = $"{ResourceName}.birthDate",
         Path = $"{ResourceName}.birthDate",
-        Min = 1,
-        Max = "0"
-      });
-
-      Def.Differential.Element.Add(new ElementDefinition()
-      {
-        ElementId = $"{ResourceName}.birthDate.extension",
-        Path = $"{ResourceName}.birthDate.extension",
+        MustSupport = true
       });
 
       Def.Differential.Element.Add(new ElementDefinition()
@@ -245,7 +260,8 @@ namespace Icims.Profile.StructureDefinitionGen
         ElementId = $"{ResourceName}.birthDate.extension:accuracyIndicator",
         Path = $"{ResourceName}.birthDate.extension",
         SliceName = "accuracyIndicator",
-        Max = "0"
+        Max = "0",
+        MustSupport = true
       });
 
       Def.Differential.Element.Add(new ElementDefinition()
@@ -253,17 +269,19 @@ namespace Icims.Profile.StructureDefinitionGen
         ElementId = $"{ResourceName}.birthDate.extension:birthTime",
         Path = $"{ResourceName}.birthDate.extension",
         SliceName = "birthTime",
-        Max = "0"
+        Max = "0",
+        MustSupport = true
       });
 
       Def.Differential.Element.Add(new ElementDefinition()
       {
-        ElementId = $"{ResourceName}.birthDate.extension:birthTime.valueDateTime:valueDateTime",
+        ElementId = $"{ResourceName}.birthDate.extension:birthTime:valueDateTime",
         Path = $"{ResourceName}.birthDate.extension.valueDateTime",
         SliceName = "valueDateTime",
-        Min = 1,
-        Max = "1"
       });
+
+
+      //    ### deceased #######################################
 
       Def.Differential.Element.Add(new ElementDefinition()
       {

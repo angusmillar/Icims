@@ -44,13 +44,22 @@ title: profile
 
 <div id="tabs">
   <ul>
-    <li><a href="#tabs-snap">Snapshot Table</a></li>
+    <li><a href="#tabs-snap">Full Structure</a></li>
+    <li><a href="#tabs-snap-must-support">Must Support Structure</a></li>
   </ul>
 
   <div id="tabs-snap">
     <div id="tbl-snap">
       <div id="tbl-snap-inner">
         {% include {{[type]}}-{{[id]}}-snapshot.xhtml %}
+      </div>
+    </div>
+  </div>
+
+  <div id="tabs-snap-must-support">
+    <div id="tbl-snap-must-support">
+      <div id="tbl-snap-must-support-inner">
+        {% include {{[type]}}-{{[id]}}-snapshot-by-mustsupport.xhtml %}
       </div>
     </div>
   </div>

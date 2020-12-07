@@ -74,6 +74,11 @@ namespace Icims.Common.Models.IcimsInterface
     /** @property {string} aboriginality - The Patient's ATSI code value*/
     public string aboriginality { get; set; }
 
+    /** @property {string} aboriginality - The Patient's ATSI code value*/
+    public string deathIndicator { get; set; }
+
+    /** @property {string} aboriginality - The Patient's ATSI code value*/
+    public string deathDateTime { get; set; }
 
     public virtual Dictionary<string, string> GetValueDictionary()
     {
@@ -99,6 +104,9 @@ namespace Icims.Common.Models.IcimsInterface
       CustomEncode("marital_status", this.marital_status);
       CustomEncode("language", this.language);
       CustomEncode("aboriginality", this.aboriginality);
+      CustomEncode("deathIndicator", this.aboriginality);
+      CustomEncode("deathDateTime", this.aboriginality);
+
       return this.ValueDictionay;
     }
 
